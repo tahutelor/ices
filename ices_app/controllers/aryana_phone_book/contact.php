@@ -33,6 +33,8 @@ class Contact extends MY_ICES_Controller {
         $form->form_group_add()->button_add()->button_set('class', 'primary')->button_set('value', Lang::get(array('New', 'Contact')))
                 ->button_set('icon', 'fa fa-plus')->button_set('href', ICES_Engine::$app['app_base_url'] . 'contact/add');
 
+				
+				
         $cols = array(
             array("name" => "contact_name", "label" => "Name", "data_type" => "text", "is_key" => true),
             array("name" => "contact_category_text", "label" => "Contact Category", "data_type" => "text"),
