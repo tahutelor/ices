@@ -53,6 +53,7 @@
                     $(lparent_pane).find(lprefix_id + '_purchase_return_status').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_total_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_total_discount_amount').closest('div [class*="form-group"]').show();
+                    $(lparent_pane).find(lprefix_id + '_additional_cost_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_grand_total_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_notes').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_tbl_pr_product').closest('div [class*="form-group"]').show();
@@ -83,6 +84,7 @@
                     $(lparent_pane).find(lprefix_id + '_purchase_return_status').select2('enable');
                     $(lparent_pane).find(lprefix_id + "_total_amount").prop("disabled", true);
                     $(lparent_pane).find(lprefix_id + "_total_discount_amount").prop("disabled", false);
+                    $(lparent_pane).find(lprefix_id + "_additional_cost_amount").prop("disabled", false);
                     $(lparent_pane).find(lprefix_id + "_grand_total_amount").prop("disabled", true);
                     $(lparent_pane).find(lprefix_id + "_notes").prop("disabled", false);
                     break;
@@ -145,6 +147,7 @@
 
                     json_data.purchase_return.store_id = $(lparent_pane).find(lprefix_id + "_store").select2('val');
                     json_data.purchase_return.total_discount_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id + "_total_discount_amount").val());
+                    json_data.purchase_return.additional_cost_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id + "_additional_cost_amount").val());
                     
                     json_data.pr_product = purchase_return_tbl_pr_product_method.setting.func_get_data_table().pr_product;
                     break;
@@ -210,10 +213,11 @@
             var ltr_arr = $(lparent_pane).find(lprefix_id+'_tbl_pr_product tbody tr');
             var ltotal_amount = APP_CONVERTER._float(0);
             var ltotal_discount_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id+('_total_discount_amount')).val());
+            var ladditional_cost_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id+('_additional_cost_amount')).val());
             $.each(ltr_arr,function(lidx, lrow){
                 ltotal_amount+= APP_CONVERTER._float($(lrow).find('[col_name="subtotal_amount"] div')[0].innerHTML);
             });
-            var lgrand_total_amount = ltotal_amount - ltotal_discount_amount;
+            var lgrand_total_amount = ltotal_amount - ltotal_discount_amount + ladditional_cost_amount;
             $(lparent_pane).find(lprefix_id+'_total_amount').val(APP_CONVERTER.thousand_separator(ltotal_amount));
             $(lparent_pane).find(lprefix_id+'_grand_total_amount').val(APP_CONVERTER.thousand_separator(lgrand_total_amount));
             $(lparent_pane).find(lprefix_id+'_outstanding_grand_total_amount').val(APP_CONVERTER.thousand_separator(lgrand_total_amount));
@@ -238,6 +242,10 @@
         });
         
         $(lparent_pane).find(lprefix_id+'_total_discount_amount').on('change',function(){
+            purchase_return_methods.all_amount_set();
+        });
+        
+         $(lparent_pane).find(lprefix_id+'_additional_cost_amount').on('change',function(){
             purchase_return_methods.all_amount_set();
         });
         
@@ -290,6 +298,7 @@
                         $(lparent_pane).find(lprefix_id + '_notes').val(lpurchase_return.notes);
                         $(lparent_pane).find(lprefix_id + '_total_amount').val(APP_CONVERTER.thousand_separator(lpurchase_return.total_amount));
                         $(lparent_pane).find(lprefix_id + '_total_discount_amount').val(APP_CONVERTER.thousand_separator(lpurchase_return.total_discount_amount));
+                        $(lparent_pane).find(lprefix_id + '_additional_cost_amount').val(APP_CONVERTER.thousand_separator(lpurchase_return.additional_cost_amount));
                         $(lparent_pane).find(lprefix_id + '_grand_total_amount').val(APP_CONVERTER.thousand_separator(lpurchase_return.grand_total_amount));
                         $(lparent_pane).find(lprefix_id + '_outstanding_grand_total_amount').val(APP_CONVERTER.thousand_separator(lpurchase_return.outstanding_grand_total_amount));
                         $(lparent_pane).find(lprefix_id + '_supplier').select2('data',lpurchase_return.supplier).change();

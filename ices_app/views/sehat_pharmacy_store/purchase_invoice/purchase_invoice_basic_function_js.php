@@ -54,6 +54,7 @@
                     $(lparent_pane).find(lprefix_id + '_purchase_invoice_status').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_total_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_total_discount_amount').closest('div [class*="form-group"]').show();
+                    $(lparent_pane).find(lprefix_id + '_additional_cost_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_grand_total_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_outstanding_grand_total_amount').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_notes').closest('div [class*="form-group"]').show();
@@ -86,6 +87,7 @@
                     $(lparent_pane).find(lprefix_id + '_purchase_invoice_status').select2('enable');
                     $(lparent_pane).find(lprefix_id + "_total_amount").prop("disabled", true);
                     $(lparent_pane).find(lprefix_id + "_total_discount_amount").prop("disabled", false);
+                    $(lparent_pane).find(lprefix_id + "_additional_cost_amount").prop("disabled", false);
                     $(lparent_pane).find(lprefix_id + "_grand_total_amount").prop("disabled", true);
                     $(lparent_pane).find(lprefix_id + "_outstanding_grand_total_amount").prop("disabled", true);                    
                     $(lparent_pane).find(lprefix_id + "_notes").prop("disabled", false);
@@ -113,6 +115,7 @@
             $(lparent_pane).find(lprefix_id+'_supplier').select2('data',null).change();
             $(lparent_pane).find(lprefix_id + '_total_amount').val('0.00');
             $(lparent_pane).find(lprefix_id + '_total_discount_total_amount').val('0.00');
+            $(lparent_pane).find(lprefix_id + '_additional_cost_amount').val('0.00');
             $(lparent_pane).find(lprefix_id + '_grand_total_amount').val('0.00');
             $(lparent_pane).find(lprefix_id + '_outstanding_grand_total_amount').val('0.00');
             $(lparent_pane).find(lprefix_id + '_notes').val('');
@@ -150,6 +153,7 @@
                     json_data.purchase_invoice.supplier_id = $(lparent_pane).find(lprefix_id + "_supplier").select2('val');
                     json_data.purchase_invoice.supplier_si_code = $(lparent_pane).find(lprefix_id + "_supplier_si_code").val();
                     json_data.purchase_invoice.total_discount_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id + "_total_discount_amount").val());
+                    json_data.purchase_invoice.additional_cost_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id + "_additional_cost_amount").val());
                     
                     json_data.purchase_invoice_product = purchase_invoice_tbl_purchase_invoice_product_method.setting.func_get_data_table().purchase_invoice_product;
                     break;
@@ -194,10 +198,11 @@
             var ltr_arr = $(lparent_pane).find(lprefix_id+'_tbl_purchase_invoice_product tbody tr');
             var ltotal_amount = APP_CONVERTER._float(0);
             var ltotal_discount_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id+('_total_discount_amount')).val());
+            var ladditional_cost_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id+('_additional_cost_amount')).val());
             $.each(ltr_arr,function(lidx, lrow){
                 ltotal_amount+= APP_CONVERTER._float($(lrow).find('[col_name="subtotal_amount"] div')[0].innerHTML);
             });
-            var lgrand_total_amount = ltotal_amount - ltotal_discount_amount;
+            var lgrand_total_amount = ltotal_amount - ltotal_discount_amount + ladditional_cost_amount;
             $(lparent_pane).find(lprefix_id+'_total_amount').val(APP_CONVERTER.thousand_separator(ltotal_amount));
             $(lparent_pane).find(lprefix_id+'_grand_total_amount').val(APP_CONVERTER.thousand_separator(lgrand_total_amount));
             $(lparent_pane).find(lprefix_id+'_outstanding_grand_total_amount').val(APP_CONVERTER.thousand_separator(lgrand_total_amount));
@@ -222,6 +227,10 @@
         });
         
         $(lparent_pane).find(lprefix_id+'_total_discount_amount').on('blur',function(){
+            purchase_invoice_methods.all_amount_set();
+        });
+        
+        $(lparent_pane).find(lprefix_id+'_additional_cost_amount').on('blur',function(){
             purchase_invoice_methods.all_amount_set();
         });
         
@@ -270,6 +279,7 @@
                         $(lparent_pane).find(lprefix_id + '_total_amount').val(APP_CONVERTER.thousand_separator(lpurchase_invoice.total_amount));
                         $(lparent_pane).find(lprefix_id + '_total_discount_amount').val(APP_CONVERTER.thousand_separator(lpurchase_invoice.total_discount_amount));
                         $(lparent_pane).find(lprefix_id + '_grand_total_amount').val(APP_CONVERTER.thousand_separator(lpurchase_invoice.grand_total_amount));
+                        $(lparent_pane).find(lprefix_id + '_additional_cost_amount').val(APP_CONVERTER.thousand_separator(lpurchase_invoice.additional_cost_amount));
                         $(lparent_pane).find(lprefix_id + '_outstanding_grand_total_amount').val(APP_CONVERTER.thousand_separator(lpurchase_invoice.outstanding_grand_total_amount));
                         $(lparent_pane).find(lprefix_id + '_supplier').select2('data',lpurchase_invoice.supplier).change();
                         

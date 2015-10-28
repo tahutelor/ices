@@ -103,6 +103,7 @@ class Purchase_Invoice_Engine {
                         && isset($purchase_invoice['supplier_si_code']) 
                         && isset($purchase_invoice['purchase_invoice_status'])
                         && isset($purchase_invoice['total_discount_amount'])
+                        && isset($purchase_invoice['additional_cost_amount'])
                         && isset($purchase_invoice['notes'])
                         && isset($data['purchase_invoice_product'])
                     )) {
@@ -207,6 +208,14 @@ class Purchase_Invoice_Engine {
                     if(Tools::_float($total_discount_amount)> Tools::_float($total_amount)){
                         $success = 0;
                         $msg[] = Lang::get('Total Disc. Amount')
+                            .' '.Lang::get('invalid',true,false);
+                                
+                    }
+                    
+                    $additional_cost_amount= Tools::_float($purchase_invoice['additional_cost_amount']);
+                    if(Tools::_float($additional_cost_amount)> Tools::_float($total_amount)){
+                        $success = 0;
+                        $msg[] = Lang::get('Total Additonal Cost Amount')
                             .' '.Lang::get('invalid',true,false);
                                 
                     }
@@ -337,6 +346,7 @@ class Purchase_Invoice_Engine {
                 );
                 $total_amount = Tools::_float('0');
                 $total_discount_amount = Tools::_float(Tools::_str($purchase_invoice_data['total_discount_amount']));
+                $additional_cost_amount = Tools::_float(Tools::_str($purchase_invoice_data['additional_cost_amount']));
                 $grand_total_amount = Tools::_float('0');
                 $pi_product = array();
                 
@@ -355,9 +365,10 @@ class Purchase_Invoice_Engine {
                     );
                 }
                 
-                $grand_total_amount = $total_amount - $total_discount_amount;
+                $grand_total_amount = $total_amount - $total_discount_amount + $additional_cost_amount;
                 $purchase_invoice['total_amount'] = $total_amount;
                 $purchase_invoice['total_discount_amount'] = $total_discount_amount;
+                $purchase_invoice['additional_cost_amount'] = $additional_cost_amount;
                 $purchase_invoice['grand_total_amount'] = $grand_total_amount;
                 $purchase_invoice['outstanding_grand_total_amount'] = $grand_total_amount;
                 

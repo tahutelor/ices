@@ -312,6 +312,7 @@ class Purchase_Return_Engine {
                 
                 $total_amount = Tools::_float('0');
                 $total_discount_amount = Tools::_float(Tools::_str($purchase_return_data['total_discount_amount']));
+                $additional_cost_amount = Tools::_float(Tools::_str($purchase_return_data['additional_cost_amount']));
                 $grand_total_amount = Tools::_float('0');
                 $pr_product = array();
                 
@@ -344,9 +345,10 @@ class Purchase_Return_Engine {
                     );
                 }
                 
-                $grand_total_amount = $total_amount - $total_discount_amount;
+                $grand_total_amount = $total_amount - $total_discount_amount + $additional_cost_amount;
                 $purchase_return['total_amount'] = $total_amount;
                 $purchase_return['total_discount_amount'] = $total_discount_amount;
+                $purchase_return['additional_cost_amount'] = $additional_cost_amount;
                 $purchase_return['grand_total_amount'] = $grand_total_amount;
                 
                 $result['purchase_return'] = $purchase_return;

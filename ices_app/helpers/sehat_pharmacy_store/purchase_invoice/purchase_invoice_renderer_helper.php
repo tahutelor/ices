@@ -215,6 +215,15 @@ class Purchase_Invoice_Renderer {
                 ->input_set('is_numeric',true)
         ;
         
+        $form->input_add()->input_set('label', Lang::get('Additional Cost Amount'))
+                ->input_set('id', $id_prefix . '_additional_cost_amount')
+                ->input_set('icon', APP_ICON::dollar())
+                ->input_set('hide_all', true)
+                ->input_set('disable_all', true)
+                ->input_set('attrib', array('style' => ''))
+                ->input_set('is_numeric',true)
+        ;
+        
         $form->input_add()->input_set('label', Lang::get('Grand Total Amount'))
                 ->input_set('id', $id_prefix . '_grand_total_amount')
                 ->input_set('icon', APP_ICON::dollar())
