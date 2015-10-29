@@ -17,7 +17,7 @@ class Dashboard_Data_Support extends Dashboard_Data_Support_Parent{
     public static function weekly_sales_invoice_get(){
         $result = array(
             'data'=>array('html'=>'','script'=>''),
-            'target_data'=>'#weekly_sales_invoice'
+            'target_data'=>'#weekly_sales_invoice_content'
         );
         
         $html = '';

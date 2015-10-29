@@ -2,6 +2,9 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file://IEMA-PC/htdocs/ices/ices_app/helpers/ices/handy/printer_helper.php</file>
+            <file>file://IEMA-PC/htdocs/ices/ices_app/helpers/sehat_pharmacy_store/sales_invoice/sales_invoice_print_helper.php</file>
+        </group>
     </open-files>
 </project-private>

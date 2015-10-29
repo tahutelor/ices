@@ -313,7 +313,7 @@ class Sales_Invoice_Renderer {
             $tbl->table_set('columns',array("name"=>"row_num","label"=>"#",'col_attrib'=>array('style'=>'width:30px')));
             $tbl->table_set('columns',array("name"=>"product_text","label"=>Lang::get("Product"),'col_attrib'=>array('style'=>'')));
             $tbl->table_set('columns',array("name"=>"batch_number","label"=>Lang::get("Batch Number"),'col_attrib'=>array('style'=>'')));
-            $tbl->table_set('columns',array("name"=>"warehouse_text","label"=>Lang::get("Warehouse"),'col_attrib'=>array('style'=>'')));
+            //$tbl->table_set('columns',array("name"=>"warehouse_text","label"=>Lang::get("Warehouse"),'col_attrib'=>array('style'=>'')));
             $tbl->table_set('columns',array("name"=>"qty","label"=>Lang::get("Qty"),'attribute'=>'style="text-align:right"','col_attrib'=>array('style'=>'text-align:right')));
             $tbl->table_set('columns',array("name"=>"unit_text","label"=>Lang::get("Unit"),'col_attrib'=>array('style'=>'')));
             $tbl->table_set('data key','id');

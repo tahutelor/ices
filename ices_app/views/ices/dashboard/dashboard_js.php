@@ -3,7 +3,18 @@
     var dashboard = {
         number_of_dashboard:0,
         dashboard_draw: function(irow){
+            $(irow.target_data).empty();
+            var loverlay = $(irow.target_data).closest('[dashboard_component]').find('[id*="_overlay"]');
+            var lloading = $(irow.target_data).closest('[dashboard_component]').find('[id*="_loading"]');
+            $(loverlay).addClass('overlay');
+            $(lloading).addClass('loading-img');
+            $(irow.target_data).hide();
             APP_COMPONENT.attach($(irow.target_data),irow.data);
+            $(irow.target_data).show();
+            setTimeout(function(){
+                $(loverlay).removeClass('overlay');
+                $(lloading).removeClass('loading-img');
+            },500);
             //$(irow.target_data)[0].innerHTML = irow.data;        
             
         },

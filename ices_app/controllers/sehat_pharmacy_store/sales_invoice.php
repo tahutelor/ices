@@ -88,7 +88,7 @@ class Sales_Invoice extends MY_ICES_Controller {
 
             $app = new App();
             $app->set_title($this->title);
-            $app->set_menu('collapsed', true);
+            $app->set_menu('collapsed', false);
             $app->set_breadcrumb($this->title, strtolower('sales_invoice'));
             $app->set_content_header($this->title, $this->title_icon, $action);
             $row = $app->engine->div_add()->div_set('class', 'row');

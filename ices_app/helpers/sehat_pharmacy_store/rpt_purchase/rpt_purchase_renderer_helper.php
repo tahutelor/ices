@@ -164,6 +164,22 @@ class Rpt_Purchase_Renderer {
             array('id'=>'X','text'=>SI::get_status_attr('CANCELED')),
         );
         
+        $supp_data = array(
+            array('id'=>'all_supplier','text'=>Tools::html_tag('strong','All Supplier'))
+        );
+        
+        $main_div->input_select_add()
+            ->input_select_set('icon',App_Icon::supplier())
+            ->input_select_set('label',' Supplier')
+            ->input_select_set('id',$id_prefix.'_supplier')
+            ->input_select_set('min_length','0')
+            ->input_select_set('data_add',$supp_data)
+            ->input_select_set('value',$supp_data[0])
+            ->input_select_set('ajax_url',$path->ajax_search.'input_select_supplier_search')
+            ->input_select_set('disable_all',true)
+            ->input_select_set('hide_all',true)
+            ->input_select_set('allow_empty',false)
+        ;
         
         $main_div->input_select_add()
                 ->input_select_set('label', Lang::get('Status'))
@@ -225,12 +241,11 @@ class Rpt_Purchase_Renderer {
         $tbl->table_set('columns',array("name"=>"purchase_invoice_status","label"=>Lang::get("Status"),'attribute'=>'style=""','col_attrib'=>array('style'=>'')));
         $tbl->table_set('data key','id');
         
-        
-        
         $param = array(
             'purchase_invoice_status'=>Tools::_str(isset($data['purchase_invoice_status'])?$data['purchase_invoice_status']:''),
             'start_date'=>Tools::_str(isset($data['start_date'])?$data['start_date']:''),
             'end_date'=>Tools::_str(isset($data['end_date'])?$data['end_date']:''),
+            'supplier_id'=>Tools::_str(isset($data['supplier_id'])?$data['supplier_id']:''),            
         );
         $purchase_invoice = Rpt_Purchase_Data_Support::purchase_invoice_get($param);
         if(count($purchase_invoice) > 500) $purchase_invoice = array_splice($purchase_invoice,0,499);

@@ -90,6 +90,13 @@ class extended_fpdf extends FPDF{
         return $nl;
         //</editor-fold>
     }
+    
+    public function _putcatalog() {
+        parent::_putcatalog();
+        $this->_out('/ViewerPreferences <</PrintScaling /None>>');
+        //$this->_out('ViewerPreferences <</FitWindow false>>');
+    }
+    
 }
 
 class Printer {
@@ -116,9 +123,18 @@ class Printer {
     
     function paper_set($paper_name){
         switch($paper_name){
-            case '1/3A4':
+            case '1/6A4':
                 $this->setting->paper->orientation= 'P';
-                $this->setting->paper->size = array(99,105);
+                $this->setting->paper->size = array(105,99);
+                $this->setting->paper->line_height=4;
+                $this->setting->margin->left=5;
+                $this->setting->margin->top=3;
+                $this->setting->margin->right=5;
+                $this->font_set('Times',7,'');
+                break;
+            case '1/4A4':
+                $this->setting->paper->orientation= 'P';
+                $this->setting->paper->size = array(148,105);
                 $this->setting->paper->line_height=4;
                 $this->setting->margin->left=5;
                 $this->setting->margin->top=3;

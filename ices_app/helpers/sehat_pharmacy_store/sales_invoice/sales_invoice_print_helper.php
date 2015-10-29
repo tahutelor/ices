@@ -60,10 +60,10 @@ class Sales_Invoice_Print {
         if($success === 1){
             if($p_engine === null){
                 $p_engine = new Printer('fpdf_sales_invoice_print');
-                $p_engine->paper_set('1/2A4');
+                $p_engine->paper_set('1/6A4');
                 $p_engine->start();
             }
-
+            
             $sales_invoice = $t_sales_invoice['sales_invoice'];
             $si_product = $t_sales_invoice['si_product'];
             
@@ -78,14 +78,14 @@ class Sales_Invoice_Print {
             
             $sr_total_amount = $db->query_array($q)[0]['total_amount'];
             
-            $footer_start = 135;
-            $product_calculation_start = 114;
+            $footer_start = $p_engine->fpdf->page_height_get()-5;
+            $product_calculation_start = $p_engine->fpdf->page_height_get()-27;
             
             $header_data = array('sales_invoice'=>$sales_invoice);
             $footer_data = array('page_number'=>1,'footer_start'=>$footer_start);
             $tbl_col_width = array(
                 'row_num'=>5,
-                'product'=>45,
+                'product'=>39,
                 'qty'=>10,
                 'amount'=>15,
                 'subtotal'=>20

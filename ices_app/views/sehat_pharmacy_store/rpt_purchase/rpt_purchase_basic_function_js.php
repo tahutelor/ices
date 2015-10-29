@@ -147,9 +147,5 @@
     var rpt_purchase_reference_extra_param_get = function(){
         return {};
     }
-    
-    
-    
-    
-    
+        
 </script>
