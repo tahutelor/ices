@@ -133,7 +133,7 @@ class Purchase_Return_Renderer {
         $form->table_input_add()->table_input_set('id', $id_prefix . '_tbl_pr_product')
                 ->main_div_set('class', 'form-group hide_all ')
                 ->label_set('value', '')
-                ->table_input_set('class','table fixed-table sm-text')
+                ->table_input_set('class','table fixed-table')
                 ->table_input_set('style','')
                 ->table_input_set('columns', array(
                     'col_name' => 'ref_type',
@@ -168,7 +168,15 @@ class Purchase_Return_Renderer {
                         'class' => '', 'visible' => true
                     ),
                 ))
-                
+                ->table_input_set('columns', array(
+                    'col_id_exists' => true,
+                    'col_name' => 'unit',
+                    'th' => array('val' => Lang::get(array('Unit')), 'visible' => true,'col_style'=>'width:75px'),
+                    'td' => array('val' => '', 'tag' => 'div', 
+                        'attr' => array(), 
+                        'class' => '', 'visible' => true
+                    ),
+                ))
                 ->table_input_set('columns', array(
                     'col_name' => 'expired_date',
                     'th' => array('val' => Lang::get('Expired Date'), 'visible' => true,'col_style'=>'width:200px'),
@@ -191,15 +199,6 @@ class Purchase_Return_Renderer {
                     'td' => array('val' => '', 'tag' => 'input','col_style'=>'text-align:right' ,
                         'attr' => array(), 
                         'class' => 'form-control', 'visible' => true
-                    ),
-                ))
-                ->table_input_set('columns', array(
-                    'col_id_exists' => true,
-                    'col_name' => 'unit',
-                    'th' => array('val' => Lang::get(array('Unit')), 'visible' => true,'col_style'=>'width:75px'),
-                    'td' => array('val' => '', 'tag' => 'div', 
-                        'attr' => array(), 
-                        'class' => '', 'visible' => true
                     ),
                 ))
                 ->table_input_set('columns', array(

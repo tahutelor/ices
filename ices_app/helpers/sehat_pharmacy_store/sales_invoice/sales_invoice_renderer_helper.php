@@ -145,7 +145,15 @@ class Sales_Invoice_Renderer {
                         'class' => '', 'visible' => true
                     ),
                 ))
-                
+                ->table_input_set('columns', array(
+                    'col_id_exists' => true,
+                    'col_name' => 'unit',
+                    'th' => array('val' => Lang::get('Unit'), 'visible' => true,'col_style'=>'width:75px'),
+                    'td' => array('val' => '', 'tag' => 'div', 
+                        'attr' => array(), 
+                        'class' => '', 'visible' => true
+                    ),
+                ))
                 ->table_input_set('columns', array(
                     'col_name' => 'stock_qty',
                     'th' => array('val' => Lang::get('Stock Qty'), 'visible' => true,'col_style'=>'width:150px;text-align:right'),
@@ -160,15 +168,6 @@ class Sales_Invoice_Renderer {
                     'td' => array('val' => '', 'tag' => 'input','col_style'=>'text-align:right' ,
                         'attr' => array(), 
                         'class' => 'form-control', 'visible' => true
-                    ),
-                ))
-                ->table_input_set('columns', array(
-                    'col_id_exists' => true,
-                    'col_name' => 'unit',
-                    'th' => array('val' => Lang::get('Unit'), 'visible' => true,'col_style'=>'width:75px'),
-                    'td' => array('val' => '', 'tag' => 'div', 
-                        'attr' => array(), 
-                        'class' => '', 'visible' => true
                     ),
                 ))
                 ->table_input_set('columns', array(

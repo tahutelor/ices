@@ -152,7 +152,15 @@ class Purchase_Invoice_Renderer {
                         'class' => '', 'visible' => true
                     ),
                 ))
-                
+                ->table_input_set('columns', array(
+                    'col_id_exists' => true,
+                    'col_name' => 'unit',
+                    'th' => array('val' => Lang::get('Unit'), 'visible' => true,'col_style'=>'width:75px'),
+                    'td' => array('val' => '', 'tag' => 'div', 
+                        'attr' => array(), 
+                        'class' => '', 'visible' => true
+                    ),
+                ))
                 ->table_input_set('columns', array(
                     'col_name' => 'expired_date',
                     'th' => array('val' => Lang::get('Expired Date'), 'visible' => true,'col_style'=>'width:200px'),
@@ -169,15 +177,7 @@ class Purchase_Invoice_Renderer {
                         'class' => 'form-control', 'visible' => true
                     ),
                 ))
-                ->table_input_set('columns', array(
-                    'col_id_exists' => true,
-                    'col_name' => 'unit',
-                    'th' => array('val' => Lang::get('Unit'), 'visible' => true,'col_style'=>'width:75px'),
-                    'td' => array('val' => '', 'tag' => 'div', 
-                        'attr' => array(), 
-                        'class' => '', 'visible' => true
-                    ),
-                ))
+                
                 ->table_input_set('columns', array(
                     'col_name' => 'amount',
                     'th' => array('val' => 'Amount', 'visible' => true,'col_style'=>'width:150px;text-align:right'),
