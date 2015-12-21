@@ -102,6 +102,7 @@ class Product_Renderer {
                 ->input_set('icon', APP_ICON::barcode())
                 ->input_set('hide_all', true)
                 ->input_set('disable_all', true)
+                ->input_set('select_on_focus',true)
         ;
         
         $form->input_select_add()
@@ -118,6 +119,7 @@ class Product_Renderer {
         $form->input_add()->input_set('label', Lang::get('Purchase Amount'))
                 ->input_set('id', $id_prefix . '_purchase_amount')
                 ->input_set('icon', APP_ICON::money())
+                ->input_set('is_numeric',true)
                 ->input_set('hide_all', true)
                 ->input_set('disable_all', true)
         ;

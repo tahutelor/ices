@@ -403,6 +403,14 @@ class Tools{
         return $result;
         //</editor-fold>
     }
+    
+    public function urldecode($istr){
+        $result = null;
+        $result = urldecode($istr);
+        $result = preg_replace('/zyz/','/',$result);
+        return $result;
+    }
+    
 }
 
 

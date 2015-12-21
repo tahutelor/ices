@@ -124,7 +124,6 @@ class App{
         $scripts = '';
         //$scripts.= ' <script type="text/javascript">';
         $scripts.='
-            
             $(document).ready(function(){
             $("[data-mask]").inputmask();
             $(function() {';

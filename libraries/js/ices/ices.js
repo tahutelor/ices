@@ -386,6 +386,10 @@ var ICES_CONVERTER = {
         var ldate = new Date(data);
         if(data === '' || data === null) ldate = new Date();
         return ldate.format(date_format);
+    },
+    encodeURIComponent:function (iStr){
+        var lresult = encodeURIComponent(iStr.replace(/[/]/g,'zyz'));
+        return lresult;
     }
 }
 

@@ -29,7 +29,7 @@ class Product_Data_Support {
         $rs = $db->query_array($q);
         if (count($rs) > 0) {
             $product = $rs[0];
-            $product['sales_amount'] = eval('return '.$product['sales_amount'].';');
+            $product['sales_amount'] = self::sales_amount_get($product['sales_amount']);
             $result['product'] = $product;
             //die(var_dump($product));
         }
@@ -120,7 +120,7 @@ class Product_Data_Support {
                             'code'=>$row['unit_code'],
                             'name'=>$row['unit_name'],
                             'qty'=>$row['qty'],
-                            'sales_amount' => eval('return '.$row['sales_amount'].';'),
+                            'sales_amount' => self::sales_amount_get($row['sales_amount']),
                         )
                     ),
                     'barcode'=>$row['barcode'],
@@ -142,7 +142,7 @@ class Product_Data_Support {
                                 'code'=>$row2['unit_code'],
                                 'name'=>$row2['unit_name'],
                                 'qty'=>$row2['qty'],
-                                'sales_amount' => eval('return '.$row2['sales_amount'].';'),
+                                'sales_amount' => self::sales_amount_get($row2['sales_amount']),
                             );
                         }
                     }
@@ -163,7 +163,7 @@ class Product_Data_Support {
         
         foreach($t_product as $idx=>$row){
             $t_product[$idx]['text'] = Tools::html_tag('strong',$row['code'])
-                .' '.$row['name'];
+                .' '.$row['name'].' '.$row['unit_description'];
             foreach($t_product[$idx]['unit'] as $idx2=>$row2){
                 $t_product[$idx]['unit'][$idx2]['text'] = Tools::html_tag('strong',$row2['code'])
                     .' '.$row2['name'];
@@ -279,10 +279,18 @@ class Product_Data_Support {
         if(count($rs)>0){
             $result = $rs;
             foreach($result as $idx=>$row){
-                $result[$idx]['sales_amount'] = eval('return '.$row['sales_amount'].';');
+                $result[$idx]['sales_amount'] = self::sales_amount_get($row['sales_amount']);
             }
         }
         
+        return $result;
+        //</editor-fold>
+    }
+    
+    public static function sales_amount_get($formula){
+        //<editor-fold defaultstate="collapsed">
+        $amount = eval('return '.$formula.';');;
+        $result = ceil($amount/500)*500;        
         return $result;
         //</editor-fold>
     }

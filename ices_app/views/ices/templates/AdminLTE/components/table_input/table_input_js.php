@@ -109,8 +109,8 @@
                 var lresult = lmethod.setting.func_new_row_validation(lopt);
                 
                 if(lresult.success === 1){
-                    lmethod.setting.func_row_transform_comp_on_new_row(lopt);
                     lmethod.components.trash_set(lopt);
+                    lmethod.setting.func_row_transform_comp_on_new_row(lopt);                    
                     $(ltbody).append(lmethod.input_row_generate({}));
                 }                    
             });

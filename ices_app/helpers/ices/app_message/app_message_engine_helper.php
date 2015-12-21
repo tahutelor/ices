@@ -2,15 +2,14 @@
 
 class APP_Message_Engine {
 
-
-
-    public static function path_get(){
+    public static function path_get() {
         $path = array(
-            'index'=>get_instance()->config->base_url().'app_message/'
-            ,'app_message_engine'=>'app_message/app_message_engine'
-            ,'app_message_renderer' => 'app_message/app_message_renderer'
-            ,'ajax_search'=>get_instance()->config->base_url().'app_message/ajax_search/'
-
+            'index' => ICES_Engine::$app['app_base_url'] . 'app_message/'
+            , 'app_message_engine' => ICES_Engine::$app['app_base_dir'] . 'app_message/app_message_engine'
+            , 'app_message_data_support' => ICES_Engine::$app['app_base_dir'] . 'app_message/app_message_data_support'
+            , 'app_message_renderer' => ICES_Engine::$app['app_base_dir'] . 'app_message/app_message_renderer'
+            , 'ajax_search' => ICES_Engine::$app['app_base_url'] . 'app_message/ajax_search/'
+            , 'data_support' => ICES_Engine::$app['app_base_url'] . 'app_message/data_support/'
         );
 
         return json_decode(json_encode($path));

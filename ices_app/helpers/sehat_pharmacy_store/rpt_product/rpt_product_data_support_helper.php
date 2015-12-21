@@ -38,6 +38,7 @@ class Rpt_Product_Data_Support{
                 ,sum(ps.qty) qty
                 ,p.product_status
                 ,pu.purchase_amount 
+                ,replace(pu.sales_formula,"c",pu.purchase_amount ) sales_amount
                 
             from product p
             inner join product_batch pb 

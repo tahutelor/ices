@@ -228,12 +228,7 @@ class Purchase_Invoice_Engine {
                 //<editor-fold defaultstate="collapsed">
                 
                 //<editor-fold defaultstate="collapsed" desc="Major Validation">
-                if (!count($purchase_invoice_db) > 0) {
-                    $success = 0;
-                    $msg[] = 'Purchase Invoice'
-                        .' '.Lang::get('invalid',true,false);
-                }
-
+               
                 if ($success === 1) {
                     $temp_result = SI::data_validator()->validate_on_update(
                         array(
@@ -572,7 +567,7 @@ class Purchase_Invoice_Engine {
                             'unit_id'=>$row['unit_id']
                         )
                     );
-                    $temp_result = Product_Engine::purchase_amount_set($db,$param);
+                    $temp_result = Product_Engine::purchase_amount_recalculate($db,$param);
                     if($temp_result['success']!== 1){
                         $success = $temp_result['success'];
                         $msg = array_merge($msg, $temp_result['msg']);
@@ -758,7 +753,7 @@ class Purchase_Invoice_Engine {
                             'unit_id'=>$row['unit_id']
                         )
                     );
-                    $temp_result = Product_Engine::purchase_amount_set($db,$param);
+                    $temp_result = Product_Engine::purchase_amount_recalculate($db,$param,null);
                     if($temp_result['success']!== 1){
                         $success = $temp_result['success'];
                         $msg = array_merge($msg, $temp_result['msg']);

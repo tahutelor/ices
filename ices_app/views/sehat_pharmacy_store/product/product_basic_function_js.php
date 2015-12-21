@@ -80,6 +80,7 @@
                 case 'view':
                     $(lparent_pane).find(lprefix_id + "_name").prop("disabled", false);
                     $(lparent_pane).find(lprefix_id + "_barcode").prop("disabled", false);
+                    $(lparent_pane).find(lprefix_id + "_purchase_amount").prop("disabled", false);
                     $(lparent_pane).find(lprefix_id + "_sales_formula").prop("disabled", false);
                     $(lparent_pane).find(lprefix_id + '_print_product_status').select2('enable');
                     $(lparent_pane).find(lprefix_id + '_product_status').select2('enable');
@@ -130,6 +131,7 @@
                     json_data.product.barcode = $(lparent_pane).find(lprefix_id + "_barcode").val();
                     json_data.product.sales_formula = $(lparent_pane).find(lprefix_id + "_sales_formula").val();
                     json_data.product.unit_id = $(lparent_pane).find(lprefix_id + "_unit").select2('val');
+                    json_data.product.purchase_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id + "_purchase_amount").val());
                     json_data.product.product_status = $(lparent_pane).find(lprefix_id + "_product_status").select2('val');
                     json_data.product.notes = $(lparent_pane).find(lprefix_id + "_notes").val();
                     
@@ -162,7 +164,7 @@
             lformula = lformula.replace(/c/,lpurchase_amount);
             var lsales_amount = '0';
             try{
-                lsales_amount = eval(lformula); 
+                lsales_amount = Math.ceil(APP_CONVERTER._float(eval(lformula))/APP_CONVERTER._float(500))*500; 
             }
             catch(e){}
             

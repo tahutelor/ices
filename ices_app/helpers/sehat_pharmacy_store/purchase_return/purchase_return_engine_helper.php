@@ -215,12 +215,6 @@ class Purchase_Return_Engine {
                 //<editor-fold defaultstate="collapsed">
                 
                 //<editor-fold defaultstate="collapsed" desc="Major Validation">
-                if (!count($purchase_return_db) > 0) {
-                    $success = 0;
-                    $msg[] = 'Purchase Return'
-                        .' '.Lang::get('invalid',true,false);
-                }
-
                 if ($success === 1) {
                     $temp_result = SI::data_validator()->validate_on_update(
                         array(

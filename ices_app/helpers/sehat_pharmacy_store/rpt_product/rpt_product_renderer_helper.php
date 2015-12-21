@@ -236,6 +236,7 @@ class Rpt_Product_Renderer {
         //<editor-fold defaultstate="collapsed">
         SI::module()->load_class(array('module'=>'rpt_product','class_name'=>'rpt_product_data_support'));
         SI::module()->load_class(array('module'=>'product','class_name'=>'product_engine'));
+        SI::module()->load_class(array('module'=>'product','class_name'=>'product_data_support'));
         $result = array('html'=>'','script'=>'');
         $path = Rpt_Product_Engine::path_get();
         $id_prefix = Rpt_Product_Engine::$prefix_id;
@@ -253,6 +254,7 @@ class Rpt_Product_Renderer {
         $tbl->table_set('columns',array("name"=>"qty","label"=>Lang::get("Qty"),'attribute'=>'style="text-align:right"','col_attrib'=>array('style'=>'text-align:right')));
         $tbl->table_set('columns',array("name"=>"unit_code","label"=>Lang::get("Unit"),'col_attrib'=>array('style'=>'')));
         $tbl->table_set('columns',array("name"=>"purchase_amount","label"=>Lang::get("Purchase Amount"),'attribute'=>'style="text-align:right"','col_attrib'=>array('style'=>'text-align:right')));
+        $tbl->table_set('columns',array("name"=>"sales_amount","label"=>Lang::get("Sales Amount"),'attribute'=>'style="text-align:right"','col_attrib'=>array('style'=>'text-align:right')));
         $tbl->table_set('columns',array("name"=>"product_status","label"=>Lang::get("Status"),'attribute'=>'style=""','col_attrib'=>array('style'=>'')));
         $tbl->table_set('data key','id');
         
@@ -278,6 +280,7 @@ class Rpt_Product_Renderer {
             );
             $product_stock[$idx]['qty'] = Tools::thousand_separator($row['qty']);
             $product_stock[$idx]['purchase_amount'] = Tools::thousand_separator($row['purchase_amount']);
+            $product_stock[$idx]['sales_amount'] = Tools::thousand_separator(Product_Data_Support::sales_amount_get($row['sales_amount']));
             
         }
         if(count($product_stock)>0){

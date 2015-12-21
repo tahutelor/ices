@@ -6,7 +6,7 @@
     </div><!-- ./wrapper -->
 </body>
 <script src="<?php echo $lib_root ?>js/jquery.min.js"></script>
-<script src="<?php echo $lib_root ?>js/jquery-ui.js"></script>
+<script src="<?php echo $lib_root ?>js/jquery-ui.min.js"></script>
 <script src="<?php echo $lib_root ?>js/plugins/input-mask/jquery.inputmask.js"></script>
 <script src="<?php echo $lib_root ?>js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="<?php echo $lib_root ?>js/plugins/input-mask/jquery.inputmask.extensions.js"></script>
@@ -15,8 +15,10 @@
 <script src="<?php echo $lib_root ?>js/ices/ices.js" type="text/javascript"></script>
 <script src="<?php echo $lib_root ?>js/AdminLTE/app_ext.js" type="text/javascript"></script>
 <script src="<?php echo $lib_root ?>js/AdminLTE/pace.js" type="text/javascript"></script>
+<?php /*
 <script src="<?php echo $lib_root ?>js/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="<?php echo $lib_root ?>js/plugins/timepicker/bootstrap-timepicker.js" type="text/javascript"></script>
+*/ ?>
 <script src="<?php echo $lib_root ?>js/plugins/select2/select2.js" type="text/javascript"></script>
 <script src="<?php echo $lib_root ?>js/plugins/scrollTo/jquery.scrollTo.js" type="text/javascript"></script>
 <script src="<?php echo $lib_root ?>js/plugins/datetimepicker/jquery.datetimepicker.js" type="text/javascript"></script>

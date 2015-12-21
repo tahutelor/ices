@@ -107,9 +107,11 @@ class SI_Data_Submit{
         $rs = $db->query($q);
         
         if($success === 1){
+            $_POST['message_session'] = true;
             Message::set('success',$msg);
         }       
         else if ($success === 0){
+            $_POST['message_session'] = false;
             Message::set('error',$msg);
         }
 

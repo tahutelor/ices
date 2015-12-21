@@ -100,13 +100,29 @@ class ICES_Engine {
                     ),
                     //</editor-fold>
                 ),
-                'active'=>true
+                'active'=>false
             ),
             array(
                 'val'=>'sehat',
                 'app'=>array(
                     //<editor-fold defaultstate="collapsed">
-                    
+                    array(
+                        'val'=>'sehat_pharmacy_store',
+                        'text'=>'Pharmacy Store',
+                        'dev_text'=>'Sehat - Parmacy Store',
+                        'short_name'=>'Pharmacy Store',
+                        'app_base_url'=>get_instance()->config->base_url().'sehat_pharmacy_store/',
+                        'app_icon_img'=>get_instance()->config->base_url().'libraries/img/ices/sehat_pharmacy_store.png',
+                        'app_base_dir'=>'sehat_pharmacy_store/',
+                        'app_db_conn_name'=>'sehat_pharmacy_store',
+                        'app_translate'=>true,
+                        'app_default_url'=>get_instance()->config->base_url().'sehat_pharmacy_store/dashboard',
+                        'app_theme'=>'AdminLTE',
+                        'app_db_lock_name'=>'sehat_pharmacy_store',
+                        'app_db_lock_limit'=>10,
+                        'non_permission_controller'=>array(),
+                        'app_info'=>'Support: +6281-133-08009<br/><i class="fa fa-skype text-blue"></i> edwin_prayoga'
+                    ),
                     //</editor-fold>
                 ),
                 'active'=>true
@@ -130,7 +146,7 @@ class ICES_Engine {
                 'app_db_lock_name'=>'ices',
                 'app_db_lock_limit'=>10,
                 'non_permission_controller'=>array(),
-                'app_info'=>'Support: +628113308009<br/><i class="fa fa-skype text-blue"></i> edwin_prayoga'
+                'app_info'=>'Support: +6281-133-08009<br/><i class="fa fa-skype text-blue"></i> edwin_prayoga'
             ),
             //</editor-fold>
         );

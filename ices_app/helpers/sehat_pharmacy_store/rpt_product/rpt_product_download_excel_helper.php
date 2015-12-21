@@ -6,6 +6,7 @@ class Rpt_Product_Download_Excel{
         //<editor-fold defaultstate="collapsed">
         SI::module()->load_class(array('module'=>'rpt_purchase','class_name'=>'rpt_purchase_data_support'));
         SI::module()->load_class(array('module'=>'product','class_name'=>'product_engine'));
+        SI::module()->load_class(array('module'=>'product','class_name'=>'product_data_support'));
         SI::module()->load_class(array('module'=>'warehouse','class_name'=>'warehouse_data_support'));
         
         $keyword = Tools::_str((isset($param['keyword'])?Tools::_str($param['keyword']):''));
@@ -55,11 +56,12 @@ class Rpt_Product_Download_Excel{
         $excel::$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
         $excel::$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $excel::$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $excel::$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         
         $active_row = 3;
         
         $excel::$objPHPExcel->getActiveSheet()->getStyle('A'.$active_row.':'.'G'.$active_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $excel::array_to_text(array('No',Lang::get('Category'),Lang::get(array('Product')),Lang::get('Qty'),Lang::get('Unit'),Lang::get('Purchase Amount'),Lang::get('Status')),'A'.$active_row,0);
+        $excel::array_to_text(array('No',Lang::get('Category'),Lang::get(array('Product')),Lang::get('Qty'),Lang::get('Unit'),Lang::get('Purchase Amount'),Lang::get('Sales Amount'),Lang::get('Status')),'A'.$active_row,0);
         $active_row+=1;
         
         $pi_start_row = $active_row;
@@ -91,9 +93,14 @@ class Rpt_Product_Download_Excel{
             $excel::$objPHPExcel->getActiveSheet()->getStyle("F".$active_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $excel::array_to_text(array($purchase_amount),'F'.$active_row,0);
             
+            $sales_amount = Product_Data_support::sales_amount_get($ps_row['sales_amount']);
+            $excel::$objPHPExcel->getActiveSheet()->getStyle("G".$active_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+            $excel::$objPHPExcel->getActiveSheet()->getStyle("G".$active_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+            $excel::array_to_text(array($sales_amount),'G'.$active_row,0);
+            
             $product_status = SI::type_get('product_engine',$ps_row['product_status'],'$status_list')['text'];
-            $excel::$objPHPExcel->getActiveSheet()->getStyle("G".$active_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-            $excel::array_to_text(array($product_status),'G'.$active_row,0);
+            $excel::$objPHPExcel->getActiveSheet()->getStyle("H".$active_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $excel::array_to_text(array($product_status),'H'.$active_row,0);
             
             $pi_end_row = $active_row;
             $active_row+=1;

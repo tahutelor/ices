@@ -204,7 +204,7 @@ class Product extends MY_ICES_Controller {
                     $row->product_category_text = Tools::html_tag('strong', $row->product_category_code). ' ' . $row->product_category_name;
                     $row->purchase_amount = Tools::thousand_separator($row->purchase_amount);
                     
-                    $row->sales_amount = Tools::thousand_separator(eval('return '.$row->sales_amount.';'));
+                    $row->sales_amount = Tools::thousand_separator(Product_Data_Support::sales_amount_get($row->sales_amount));
                 }
                 $temp_result = json_decode(json_encode($temp_result), true);
                 $result = $temp_result;

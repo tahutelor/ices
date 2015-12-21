@@ -20,7 +20,7 @@
             ,"data"=>array()
             ,'ajax_url'=>""
             ,'min_length'=>'1'
-            ,'value'=>array("id"=>"","text"=>"")
+            ,'value'=>array()
             ,'attrib'=>array()
             ,'checkbox'=>false
             ,'allow_empty'=>true

@@ -1000,7 +1000,10 @@ var APP_COMPONENT = {
                             $(lparent_pane).closest('.modal') : null;
                     $('#modal_confirmation_submit').modal('show');
                     $('#modal_confirmation_submit_btn_submit').off('click');
-                    $('#modal_confirmation_submit_btn_submit').on('click', function () {
+                    $('#modal_confirmation_submit_btn_submit').on('click', function (e) {
+                        e.preventDefault();
+                        var lbtn = $(this);
+                        lbtn.addClass('disabled');
                         var lsubmit_result = lParam.module_method.submit();
                         var lresult = APP_DATA_TRANSFER.submit(lsubmit_result.ajax_url, lsubmit_result.json_data);
                         
@@ -1015,7 +1018,9 @@ var APP_COMPONENT = {
                             }
                         }
                         $('#modal_confirmation_submit').modal('hide');
-
+                        setTimeout(function () {
+                            lbtn.removeClass('disabled')
+                        }, 1000);
                     });
                     
                     $(lParam.window_scroll).scrollTop(0);
@@ -1156,6 +1161,11 @@ $(document).ready(function () {
         if (e.which === 8 && !$(e.target).is("input, textarea")) {
             e.preventDefault();
         }
+    });
+
+    $('.modal').modal({
+        show: false,
+        keyboard: false,
     });
 
     function preventBack() {

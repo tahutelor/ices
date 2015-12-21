@@ -62,7 +62,6 @@
                 var lcomp = $(lapp_list[lrow].html);
                 $(lcomp).addClass('active');
                 $(lcomp).attr('idx',lrow);
-                console.log(lcomp_width);
                 $(lcomp).find('div.box').width(lcomp_width-10);
                 $('.carousel-inner').append($(lcomp));
             });

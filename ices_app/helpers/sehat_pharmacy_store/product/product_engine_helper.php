@@ -105,6 +105,7 @@ class Product_Engine {
                     && isset($product['unit_id'])
                     && isset($product['product_status'])
                     && isset($product['product_category_id'])
+                    && isset($product['purchase_amount'])
                 )){
                     $success = 0;
                     $msg[] = Lang::get('Product') 
@@ -117,6 +118,7 @@ class Product_Engine {
                     $product_category_id = Tools::empty_to_null(Tools::_str($product['product_category_id']));
                     $sales_formula = Tools::empty_to_null(Tools::_str($product['sales_formula']));
                     $unit_id = Tools::empty_to_null(Tools::_str($product['unit_id']));
+                    $purchase_amount = Tools::_float($product['purchase_amount']);
                     
                     //<editor-fold defaultstate="collapsed" desc="Major Validation">
                     if (is_null($product_name) 
@@ -134,6 +136,12 @@ class Product_Engine {
 
                     //</editor-fold>
 
+                    if(Tools::_float($purchase_amount)<Tools::_float('0')){
+                        $success = 0;
+                        $msg[] = Lang::get('Purchase Amount')
+                            .' '.Lang::get('invalid');
+                    }
+                    
                     $q = '
                         select 1
                         from product p
@@ -297,7 +305,7 @@ class Product_Engine {
 
                 $p_u = array(
                     'unit_id'=>Tools::_str($product_data['unit_id']),
-                    'purchase_amount'=>'0',
+                    'purchase_amount'=>Tools::_str($product_data['purchase_amount']),
                     'sales_formula' => Tools::script_math_get(array(
                             'script'=>is_null(Tools::empty_to_null($product_data['sales_formula']))?'c':Tools::_str($product_data['sales_formula']),
                             'type'=>'script'
@@ -419,21 +427,6 @@ class Product_Engine {
             }
         }
         
-        if($success === 1){
-            $param =array(
-                'p_u'=>array(
-                    'product_id'=>$fp_u['product_id'],
-                    'unit_id'=>$fp_u['unit_id']
-                )
-            );
-            $temp_result = Product_Engine::purchase_amount_set($db,$param);
-            if($temp_result['success']!== 1){
-                $success = $temp_result['success'];
-                $msg = array_merge($msg, $temp_result['msg']);
-            }
-        }
-        
-        
         $result['success'] = $success;
         $result['msg'] = $msg;
         return $result;
@@ -447,7 +440,7 @@ class Product_Engine {
         //</editor-fold>
     }
     
-    public function purchase_amount_set($db, $final_data){
+    public function purchase_amount_recalculate($db, $final_data){
         //<editor-fold defaultstate="collapsed">
         $path = Product_Engine::path_get();
         get_instance()->load->helper($path->product_data_support);
@@ -472,15 +465,17 @@ class Product_Engine {
                 and pip.unit_id = '.$db->escape($unit_id).'            
         ';
         
-        $rs = $db->query_array($q);
+        $rs = $db->query_array($q);        
         
-        $highest_amount = $rs[0]['amount'];
+        $purchase_amount = $rs[0]['amount'];
+        
         
         $q = '
             update p_u
-            set p_u.purchase_amount = '.$db->escape($highest_amount).'
+            set p_u.purchase_amount = '.$db->escape($purchase_amount).'
             where p_u.product_id = '.$db->escape($product_id).'
                 and p_u.unit_id = '.$db->escape($unit_id).'
+                and p_u.purchase_amount <= '.$db->escape($purchase_amount).'
         ';
         if (!$db->query($q)) {
             $msg[] = $db->_error_message();

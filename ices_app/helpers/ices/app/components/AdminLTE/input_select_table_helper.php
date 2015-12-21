@@ -15,7 +15,7 @@
             ,"data"=>array()
             ,'ajax_url'=>""
             ,'min_length'=>'1'
-            ,'value'=>array("id"=>"","data"=>"")
+            ,'value'=>array()
             ,'hide_all'=>false
         );
         
@@ -112,9 +112,6 @@
                     $props->min_length=$data;
                     break;
                 case 'value':
-                    $val =array("id"=>"","text"=>"");
-                    if(isset($data['id'])) $val['id']=$data['id'];
-                    $val['text']=isset($data['data'])?$data['data']:(isset($data['text'])?$data['text']:'');
                     $props->value = $val;
                     break;    
                 case 'hide_all':

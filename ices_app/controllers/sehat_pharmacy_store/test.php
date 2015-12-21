@@ -7,7 +7,11 @@ class Test extends MY_ICES_Controller{
     }
     
     function index(){       
-        var_dump(Tools::_date('','Y-m-d H:i:s','-P6D'));
+        SI::module()->load_class(array('module'=>'product','class_name'=>'product_data_support'));
+        $c = Tools::_float(235500);
+        $a = ceil($c/500)*500;
+        
+        echo $a;
         
     }
 }

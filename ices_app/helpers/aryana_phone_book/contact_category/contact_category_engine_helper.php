@@ -21,7 +21,7 @@ class Contact_Category_Engine {
                     'success' => array(
                         array('val' => 'Add')
                         , array('val' => Lang::get(array('Contact Category'), true, true, false, false, true))
-                        , array('val' => 'success','lower_all'=>true)
+                        , array('val' => 'success', 'lower_all' => true)
                     )
                 )
             ),
@@ -35,7 +35,7 @@ class Contact_Category_Engine {
                     'success' => array(
                         array('val' => 'Update')
                         , array('val' => Lang::get(array('Contact Category'), true, true, false, false, true))
-                        , array('val' => 'success','lower_all'=>true)
+                        , array('val' => 'success', 'lower_all' => true)
                     )
                 )
             ),
@@ -48,7 +48,7 @@ class Contact_Category_Engine {
                     'success' => array(
                         array('val' => 'Update')
                         , array('val' => Lang::get(array('Contact Category'), true, true, false, false, true))
-                        , array('val' => 'success','lower_all'=>true)
+                        , array('val' => 'success', 'lower_all' => true)
                     )
                 )
             ),
@@ -84,7 +84,7 @@ class Contact_Category_Engine {
         $contact_category = isset($data['contact_category']) ? Tools::_arr($data['contact_category']) : array();
         $contact_category_id = $contact_category['id'];
         $temp = Contact_Category_Data_Support::contact_category_get($contact_category_id);
-        $contact_category_db = count($temp)>0?$temp['contact_category']:array();
+        $contact_category_db = count($temp) > 0 ? $temp['contact_category'] : array();
 
         $db = new DB();
         switch ($method) {
@@ -95,7 +95,7 @@ class Contact_Category_Engine {
                 if (!(isset($contact_category['code']) && isset($contact_category['name']) && isset($contact_category['notes']) && isset($contact_category['contact_category_status'])
                         )) {
                     $success = 0;
-                    $msg[] = Lang::get('Contact Category Parameter').' '.Lang::get('invalid',true,false);
+                    $msg[] = Lang::get('Contact Category Parameter') . ' ' . Lang::get('invalid', true, false);
                 }
                 if ($success === 1) {
 
@@ -133,37 +133,37 @@ class Contact_Category_Engine {
 
                         if ($success === 1) {
                             $temp_result = SI::data_validator()->validate_on_update(
-                                            array(
-                                        'module' => 'contact_category',
-                                        'module_name' => Lang::get('Contact Category'),
-                                        'module_engine' => 'contact_category_engine',
-                                            ), $contact_category
+                                    array(
+                                'module' => 'contact_category',
+                                'module_name' => Lang::get('Contact Category'),
+                                'module_engine' => 'contact_category_engine',
+                                    ), $contact_category
                             );
                             $success = $temp_result['success'];
-                            $msg = array_merge($msg,$temp_result['msg']);
+                            $msg = array_merge($msg, $temp_result['msg']);
                         }
-                        
-                        if($method === self::$prefix_method.'_inactive'){
+
+                        if ($method === self::$prefix_method . '_inactive') {
                             //<editor-fold defaultstate="collapsed">
                             $q = '
                                 select 1
                                 from c_cc ccc
                                     inner join contact c
-                                where ccc.contact_category_id = '.$db->escape($contact_category_id).'
+                                where ccc.contact_category_id = ' . $db->escape($contact_category_id) . '
                                     and c.status > 0
                                 limit 1
                             ';
                             $rs = $db->query_array($q);
-                            if(count($rs)>0){
+                            if (count($rs) > 0) {
                                 $success = 0;
-                                $msg[] = Lang::get('Contact Category').' '.Lang::get('used');
+                                $msg[] = Lang::get('Contact Category') . ' ' . Lang::get('used');
                             }
                             //</editor-fold>
                         }
                         //</editor-fold>
                     }
                 }
-                
+
                 //</editor-fold>
                 break;
             default:
@@ -196,7 +196,7 @@ class Contact_Category_Engine {
             case self::$prefix_method . '_inactive':
                 //<editor-fold defaultstate="collapsed">
                 $contact_category = array(
-                    'name' => Tools::_str($contact_category_data['name']),
+                    'name' => Tools::_str(ucwords(strtolower($contact_category_data['name']))),
                     'code' => Tools::_str($contact_category_data['code']),
                     'notes' => Tools::empty_to_null(Tools::_str($contact_category_data['notes'])),
                     'status' => 1,
@@ -216,7 +216,7 @@ class Contact_Category_Engine {
                 }
 
                 $result['contact_category'] = $contact_category;
-                
+
                 //</editor-fold>
                 break;
         }

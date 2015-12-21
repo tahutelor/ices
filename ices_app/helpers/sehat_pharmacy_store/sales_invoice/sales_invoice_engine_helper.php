@@ -244,12 +244,6 @@ class Sales_Invoice_Engine {
                 //<editor-fold defaultstate="collapsed">
                 
                 //<editor-fold defaultstate="collapsed" desc="Major Validation">
-                if (!count($sales_invoice_db) > 0) {
-                    $success = 0;
-                    $msg[] = 'Sales Invoice'
-                        .' '.Lang::get('invalid',true,false);
-                }
-
                 if ($success === 1) {
                     $temp_result = SI::data_validator()->validate_on_update(
                         array(

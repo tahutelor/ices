@@ -16,13 +16,12 @@
             ,"hide"=>false
             ,'input_class'=>'form-control'
             ,'attrib'=>array()
-            ,'is_date_picker'=>false
-            ,'is_time_picker'=>false
             ,'is_numeric'=>false
             ,'hide_all'=>false
             ,'disable_all'=>false
             ,'numeric_min'=>'0'
             ,'maxlength'=>'45'
+            ,'select_on_focus'=>false
         );
         
         public $numeric_opt = array('min_val'=>'0');
@@ -92,12 +91,6 @@
                 case 'class':
                     $this->properties->input_class=$data;
                     break;
-                case 'is_date_picker':
-                    $this->properties->is_date_picker=$data;
-                    break;
-                case 'is_time_picker':
-                    $this->properties->is_time_picker=$data;
-                    break;
                 case 'is_numeric':
                     $this->properties->is_numeric=$data;
                     break;
@@ -118,6 +111,9 @@
                     break;
                 case 'placeholder':
                     $this->properties->input_placeholder = $data;
+                    break;
+                case 'select_on_focus':
+                    $this->properties->select_on_focus = $data;
                     break;
                 
             }
@@ -153,7 +149,7 @@
             }
             
             $input = '<input type="'.$this->properties->input_type.'" 
-                        class="'.$this->properties->input_class.' '.($this->properties->is_time_picker?'timepicker':'').' '.($this->properties->disable_all?'disable_all':'').'" 
+                        class="'.$this->properties->input_class.' '.' '.($this->properties->disable_all?'disable_all':'').'" 
                         id="'.$this->properties->input_id.'"
                         placeholder="'.$this->properties->input_placeholder.'"
                         name = "'.$this->properties->input_name.'"    
@@ -167,9 +163,7 @@
                         '.$input_mask.'
                         '.$input_attrib.'
                         >';
-            if($this->properties->is_time_picker){
-                $input = '<div class="bootstrap-timepicker">'.$input.'</div>';
-            }
+            
             
             $output.='
 
@@ -244,24 +238,7 @@
                     });
                 ';
             }
-            if($this->properties->is_date_picker){
-                $this->additional_script.='$("#'.$this->properties->input_id.'").datepicker({
-                    format: "yyyy-mm-dd"
-                    ,autoclose:true
-                    ,forceParse:true
-                });
-                ';
-            }
-            else if($this->properties->is_time_picker){
-                $this->additional_script.='
-                $("#'.$this->properties->input_id.'").timepicker({
-                    showInputs:false
-                    ,template:false
-                    ,showMeridian:false
-                    ,defaultTime:\'current\'
-                });';
-            }
-            else if ($this->properties->is_numeric){
+            if ($this->properties->is_numeric){
                 $input_opt = '';
                 foreach($this->numeric_opt as $key=>$val){
                     $input_opt.=($input_opt === ''?'':',').$key.':"'.$val.'"';
@@ -280,6 +257,14 @@
                 . 'APP_EVENT.init().component_set("#'.$this->properties->input_id.'")'
                 . '.type_set("input").numeric_set().min_val_set("'.$this->properties->numeric_min.'").render()'
                 . '';
+            }
+            
+            if($this->properties->select_on_focus){
+                $this->additional_script.=''
+                .'$("#'.$this->properties->input_id.'").on("focus",function(){'
+                .' window.setTimeout(function(){$("#'.$this->properties->input_id.'").select();},100) '
+                .'})'
+                .'';
             }
             
         }
