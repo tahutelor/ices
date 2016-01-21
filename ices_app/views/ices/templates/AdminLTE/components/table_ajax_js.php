@@ -11,6 +11,7 @@
             ,attribute:{}
             ,data_format:[]
             ,new_tab:false
+            ,order:true
        },
        tmplt_control:
        {
@@ -117,6 +118,7 @@
                     if(row.is_key2) new_col.is_key2 = row.is_key2;
                     new_col.new_tab = row.new_tab;
                     new_col.data_format = row.data_format;
+                    new_col.order = row.order;
                     root.columns.push(new_col);
                 });
             },
@@ -136,13 +138,16 @@
                         }
                     });
                     var th_id = root.html.div_id.replace("#","")+'_'+row.name.toLowerCase();
-                    col_text +='<th id = "'+th_id+'" class="sorting" style=\''+lstyle+'\' '+lattribute+'>'+col_content+'</th>';
+                    var lth_class = row.order?'sorting':''; 
+                    col_text +='<th id = "'+th_id+'" class="'+lth_class+'" style=\''+lstyle+'\' '+lattribute+'>'+col_content+'</th>';
                     var id ="#"+th_id; 
                     $('body').off('click',id);
                     $('body').on('click',id,function(){ 
-                        <?php echo $id ?>.methods.sort_set(row.name);
-                        if(<?php echo $id ?>.methods.sort_get().indexOf(" asc ")!=-1) $(id).attr("class","sorting_asc");
-                        else $(id).attr("class","sorting_desc");
+                        if(row.order){
+                            <?php echo $id ?>.methods.sort_set(row.name);
+                            if(<?php echo $id ?>.methods.sort_get().indexOf(" asc ")!=-1) $(id).attr("class","sorting_asc");
+                            else $(id).attr("class","sorting_desc");
+                        }
                     });
                 })
                 if(root.controls.length>0){

@@ -118,7 +118,7 @@ class App{
         $result.= get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/modal_confirmation_submit/modal_confirmation_submit_view', $param, TRUE);
         $result.= get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/modal_confirmation_cancel/modal_confirmation_cancel_view', $param, TRUE);
         $result.= get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/modal_mail/modal_mail_view', $param, TRUE);
-        $result.= get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/scroll_up_down/scroll_up_down_view', $param, TRUE);
+        //$result.= get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/scroll_up_down/scroll_up_down_view', $param, TRUE);
         $result.= get_instance()->load->view($this->path['app_base_dir'].'app_message/app_message_preview_modal', array(), TRUE);
         
         $scripts = '';
@@ -141,7 +141,7 @@ class App{
         $scripts.= str_replace(array("<script>","</script>"),'',get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/modal_print/modal_print_js', array(), TRUE));
         $scripts.= str_replace(array("<script>","</script>"),'',get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/modal_confirmation_cancel/modal_confirmation_cancel_js', array(), TRUE));
         $scripts.= str_replace(array("<script>","</script>"),'',get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/modal_mail/modal_mail_js', array(), TRUE));
-        $scripts.= str_replace(array("<script>","</script>"),'',get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/scroll_up_down/scroll_up_down_js', array(), TRUE));
+        //$scripts.= str_replace(array("<script>","</script>"),'',get_instance()->load->view($this->path['app_base_dir'].'templates/'.ICES_Engine::$app['app_theme'].'/etc/scroll_up_down/scroll_up_down_js', array(), TRUE));
         $scripts.=' $("#app_container").show(); ';
         
         if(get_instance()->config->config['MY_']['disable_console']){

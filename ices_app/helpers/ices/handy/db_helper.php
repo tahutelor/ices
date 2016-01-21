@@ -24,15 +24,32 @@ class DB{
         
     }
     
-    public function query_array($sql,$limit=1000){
+    public function query_array($sql,$limit=1000,$opt = array()){
         $result = array();
         $rs = $this->db->query($sql);
         
+        $as_index = isset($opt['as_index'])?$opt['as_index']:false;
+        if($limit === null) $limit = 1000;
+        
         if($rs){
-            $result = $rs->result_array();
-            if(count($result)>$limit){
-                $result = array_splice($result,0,$limit);
+            $t_result = $rs->result_array();
+            if(count($t_result)>$limit){
+                $t_result = array_splice($t_result,0,$limit);
             }
+            
+            if($as_index){
+                foreach($t_result as $idx=>$row){
+                    $t_result_row = array();
+                    foreach($row as $idx2=>$row2){
+                        $t_result_row[] = $row2;
+                    }
+                    $result[] = $t_result_row;
+                }
+            }
+            else{
+                $result = $t_result;
+            }
+            
         }
         else{
             $result = null;

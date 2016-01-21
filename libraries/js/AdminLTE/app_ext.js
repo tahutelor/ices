@@ -52,7 +52,7 @@ var APP_MESSAGE = {
                     $(body).prepend(
                             '<div id="app_msg" class="' + msg_class + '" > ' +
                             '<i class="' + icon_class + '"> </i> ' +
-                            '<button id="' + lbtn_id + '" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> ' +
+                            '<button '+lbtn_id+' id="' + lbtn_id + '" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> ' +
                             '<b> ' + msg_type + '</b><br/>' +
                             msg_msg +
                             '</div>'
@@ -66,16 +66,21 @@ var APP_MESSAGE = {
                 $("[class=content]").prepend(
                         '<div id="app_msg" class="' + msg_class + '" > ' +
                         '<i class="' + icon_class + '"> </i> ' +
-                        '<button id="' + lbtn_id + '" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> ' +
+                        '<button '+lbtn_id+' id="' + lbtn_id + '" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> ' +
                         '<b> ' + msg_type + '</b><br/>' +
                         msg_msg +
                         '</div>'
                         );
             }
 
-            setTimeout(function () {
-                $("#" + lbtn_id + "").closest('div').remove();
-            }, lmsg_appear);
+            var ldiv = $('button['+lbtn_id+']').closest('div');
+            
+            setTimeout(function(){
+                $.each(ldiv, function(lidx_div,lrow_div){
+                    $(lrow_div).remove();
+                })
+
+            },lmsg_appear);
 
         }
         catch (err) {

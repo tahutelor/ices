@@ -114,9 +114,9 @@ function _exception_handler($severity, $message, $filepath, $line)
         $_error->log_exception($severity, $message, $filepath, $line);
     }
     
-    if(get_instance()->config->config['MY_']['exit_on_exception_handler']){        
-        die();
-    }
+    //exit when exception is called
+    die();
+    
     //</editor-fold>
 }
 
@@ -124,7 +124,8 @@ function _on_shutdown(){
     //<editor-fold defaultstate="collapsed">
     $error = error_get_last();
     
-    if($error!==null){
+    if($error!==null && $error['type'] === E_ERROR && (($error['type'] & error_reporting()) == $error['type'])){
+        //ONLY CATCH FATAL ERROR
         $post = array();
 
         if(!empty($_POST)){
@@ -164,7 +165,9 @@ function _on_shutdown(){
         );
         
         if($ajax_post){
-            ob_clean();
+            if(ob_get_contents()){
+                ob_clean();
+            }
             $result = array('success'=>0,
                 'msg'=>array(
                     'Severity: '.$levels[$error['type']],

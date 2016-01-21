@@ -19,6 +19,7 @@ class SI_Form_Renderer{
                 ,t1.moddate
                 ,t1.'.$field_name.'
                 ,t2.username user_name
+                ,concat(t2.firstname," ",t2.lastname) fullname
             from '.$table_log_name.' t1
                 inner join ices_db.employee t2 on t1.modid = t2.id
             where t1.'.$module_name.'_id = '.$db->escape($id).'
@@ -44,7 +45,7 @@ class SI_Form_Renderer{
         $table->table_set('columns',array("name"=>"row_num","label"=>"#",'col_attrib'=>array('style'=>'width:30px')));
         $table->table_set('columns',array("name"=>"moddate","label"=>"Modified Date",'col_attrib'=>array()));
         $table->table_set('columns',array("name"=>$field_name."_name","label"=>"Status",'col_attrib'=>array()));
-        $table->table_set('columns',array("name"=>"user_name","label"=>"User",'col_attrib'=>array()));
+        $table->table_set('columns',array("name"=>"fullname","label"=>"User",'col_attrib'=>array()));
         $table->table_set('data',$status_log);
         //</editor-fold>
     }

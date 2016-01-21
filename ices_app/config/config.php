@@ -7,7 +7,6 @@ $config['MY_']['pack_js'] = true;
 $config['MY_']['pack_js_media'] = 'file'; //supposed to be file or db
 $config['MY_']['limit_connection'] = 0;
 $config['MY_']['timeout'] = 90000;
-$config['MY_']['exit_on_exception_handler'] = true;
 $config['MY_']['disable_console'] = true;
 
 $config['MY_Job']['controller_time_limit'] = 10;

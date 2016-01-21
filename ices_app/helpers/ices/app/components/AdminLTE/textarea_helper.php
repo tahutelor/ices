@@ -14,6 +14,7 @@
             ,'attrib'=>array()
             ,'hide_all'=>false
             ,'disable_all'=>false
+            ,'maxlength'=>'200'
         );
         
         public $div_properties = array(
@@ -77,6 +78,9 @@
                 case 'disable_all':
                     $this->textarea_properties->disable_all = $data;
                     break;
+                case 'maxlength':
+                    $this->textarea_properties->maxlength = $data;
+                    break;
             }
             return $this;
         }
@@ -100,6 +104,7 @@
                         disable_all_type="common"    
                         autocomplete="off"
                         '.$textarea_attrib.'
+                        maxlength="'.$this->textarea_properties->maxlength.'"
                             
                         ></textarea>';
             $output.='

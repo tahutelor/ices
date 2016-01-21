@@ -5,12 +5,13 @@
             <div class="col-sm-6">
                 <div class="dataTables_length">
                     <label>
-                        <select class="form-control"size="1" id="<?php echo $id ?>_records_page" style="text-align:left;border:1px solid #ccc;display:inline-block">
+                        <select class="form-control"size="1" id="<?php echo $id ?>_records_page" style="width:100px;text-align:left;border:1px solid #ccc;display:inline-block">
                             <option value="5">5</option>
                             <option value="10" selected="selected">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
+                            <option value="1000">1000</option>
                         </select> records per page
                     </label>
                 </div>

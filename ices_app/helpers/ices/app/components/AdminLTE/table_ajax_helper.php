@@ -90,6 +90,7 @@
                             ,'attribute'=>array()
                             ,'data_format'=>array()
                             ,'new_tab'=>false
+                            ,'order'=>true
                         );
                         $col_temp= json_decode(json_encode($col_temp));
                         $col_temp->name = $row['name'];
@@ -101,6 +102,7 @@
                         if(isset($row['attribute'])) $col_temp->attribute = $row['attribute'];
                         if(isset($row['data_format'])) $col_temp->data_format = $row['data_format'];
                         if(isset($row['new_tab'])) $col_temp->new_tab = $row['new_tab'];
+                        if(isset($row['order'])) $col_temp->order = $row['order'];
                         $this->table_ajax_properties->columns[]=$col_temp;
                     }
                     break;

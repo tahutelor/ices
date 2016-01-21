@@ -108,6 +108,11 @@ class Security_Menu_Engine {
                         'id' => 'm_pnt'
                         , "properties" => array("class" => "fa fa-th")
                         , "ref" => $phone_book_app_base_url . "phone_number_type"
+                    ),
+                    Lang::get("Company") => array(
+                        'id' => 'm_cpn'
+                        , "properties" => array("class" => "fa fa-th")
+                        , "ref" => $phone_book_app_base_url . "company"
                     )
                 )
             ),

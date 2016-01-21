@@ -100,7 +100,7 @@ class ICES_Engine {
                     ),
                     //</editor-fold>
                 ),
-                'active'=>false
+                'active'=>true
             ),
             array(
                 'val'=>'sehat',
@@ -125,7 +125,7 @@ class ICES_Engine {
                     ),
                     //</editor-fold>
                 ),
-                'active'=>true
+                'active'=>false
             )
         );
         

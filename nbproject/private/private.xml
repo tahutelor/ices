@@ -4,12 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="JAVA"/>
         <group name="ARYANA-APP">
-            <file>file:/D:/htdocs/ices/ices_app/helpers/aryana_phone_book/contact_category/contact_category_data_support_helper.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/controllers/aryana_phone_book/contact_category.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/handy/si/si_helper.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/helpers/aryana_phone_book/contact_category/contact_category_renderer_helper.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/handy/tools_helper.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/helpers/aryana_phone_book/contact_category/contact_category_engine_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/aryana_phone_book/contact/contact_data_support_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/views/aryana_phone_book/contact/contact_keyword_js.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/aryana_phone_book/contact/contact_engine_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/views/aryana_phone_book/contact/contact_basic_function_js.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/controllers/aryana_phone_book/contact.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/aryana_phone_book/contact/contact_renderer_helper.php</file>
         </group>
         <group/>
     </open-files>

@@ -114,6 +114,7 @@ class Product_Data_Support {
                     'code'=>$row['code'],
                     'name'=>$row['name'],
                     'product_type'=>'registered_product',
+                    'unit_description'=>$row['unit_description'],
                     'unit'=>array(
                         array(
                             'id'=>$row['unit_id'],

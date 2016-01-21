@@ -83,14 +83,18 @@ class Contact_Engine {
 
         $contact = isset($data['contact']) ? Tools::_arr($data['contact']) : array();
         $contact_category_id = isset($data['contact_category_id']) ? Tools::_arr($data['contact_category_id']) : array();
+        $company_id = isset($data['company_id']) ? Tools::_arr($data['company_id']) : array();
         $address = isset($data['address']) ? Tools::_arr($data['address']) : array();
         $mail_address = isset($data['mail_address']) ? Tools::_arr($data['mail_address']) : array();
+        $keyword = isset($data['keyword']) ? Tools::_arr($data['keyword']) : array();
         $phone_number = isset($data['phone_number']) ? Tools::_arr($data['phone_number']) : array();
         $contact_id = $contact['id'];
 
         $temp = Contact_Data_Support::contact_get($contact_id);
         $contact_db = count($temp) > 0 ? $temp['contact'] : array();
-
+        
+//        var_dump($company_id);
+//        die();
 
         $db = new DB();
         switch ($method) {
@@ -99,7 +103,9 @@ class Contact_Engine {
             case self::$prefix_method . '_inactive':
                 //<editor-fold defaultstate="collapsed">
                 //validate Mail Address, Address, and Phone Number duplicate
-                if (!(isset($contact['code']) && isset($contact['name']) && isset($contact['notes']) && isset($contact['contact_status']) && isset($data['mail_address']) && isset($data['address']) && isset($data['phone_number']))) {
+                if (!(isset($contact['code']) && isset($contact['name']) && isset($contact['notes']) 
+                        && isset($contact['contact_status']) && isset($data['mail_address']) 
+                        && isset($data['address']) && isset($data['phone_number'])&& isset($data['keyword']))) {
                     $success = 0;
                     $msg[] = Lang::get('Contact')
                             . ' ' . Lang::get('or', true, false) . ' ' . Lang::get('Mail Address')
@@ -124,6 +130,10 @@ class Contact_Engine {
 
                     foreach ($mail_address as $idx => $row) {
                         $mail_address[$idx] = Tools::empty_to_null(Tools::_str($row));
+                    }
+                    
+                    foreach ($keyword as $idx => $row) {
+                        $keyword[$idx] = Tools::empty_to_null(Tools::_str($row));
                     }
 
                     //<editor-fold defaultstate="collapsed" desc="Major Validation">
@@ -182,6 +192,37 @@ class Contact_Engine {
                             $success = 0;
                             $msg[] = Lang::get('Contact Category') . ' ' . Lang::get('invalid', true, false);
                         }
+                        
+                        // </editor-fold>                        
+                        // <editor-fold defaultstate="collapsed" desc="Company">
+                        //validate company duplicate
+                        $temp_company = array_count_values($company_id);
+                        foreach ($temp_company as $idx => $val) {
+                            if (Tools::_float($val) > Tools::_float(1)) {
+                                $success = 0;
+                                $msg[] = Lang::get("Company") . ' ' . Lang::get("duplicate", true, FALSE);
+                                break;
+                            }
+                        }
+                        
+                        //validate invalid company
+                        $q_company_list = '';
+                        foreach ($company_id as $idx => $row) {
+                            $q_company_list .= ($q_company_list === '' ? '' : ',') . $db->escape($row);
+                        }
+
+                        $q = '
+                            select distinct id
+                            from company cpn
+                            where cpn.status > 0
+                                and cpn.id in (' . $q_company_list . ')
+                                and cpn.company_status = "active"
+                        ';
+                        $t_company_db = $db->query_array($q);
+                        if (count($t_company_db) !== count($company_id)) {
+                            $success = 0;
+                            $msg[] = Lang::get('Company') . ' ' . Lang::get('invalid', true, false);
+                        }
                         // </editor-fold>
                         //<editor-fold defaultstate="collapsed" desc="Mail Address">
                         
@@ -210,6 +251,19 @@ class Contact_Engine {
                         }
                         
                         
+                        //</editor-fold>
+                        //<editor-fold defaultstate="collapsed" desc="Keyword">
+                        
+                        //validate duplicate keyword
+                        $temp_keyword = array_count_values($keyword);
+
+                        foreach ($temp_keyword as $idx_keyword => $val_keyword) {
+                            if (Tools::_float($val_keyword) > Tools::_float(1)) {
+                                $success = 0;
+                                $msg[] = Lang::get("Keyword") . ' ' . Lang::get("duplicate", true, FALSE);
+                                break;
+                            }
+                        }
                         //</editor-fold>
                         //<editor-fold defaultstate="collapsed" desc="Address">
                         
@@ -265,7 +319,7 @@ class Contact_Engine {
                             $msg[] = Lang::get('Phone Number Type') . ' ' . Lang::get('invalid', true, false);
                         }
 
-                        //</editor-fold>
+                        //</editor-fold>     
                     }
                     
                     if (in_array($method, array(self::$prefix_method . '_active', self::$prefix_method . '_inactive'))) {
@@ -319,7 +373,9 @@ class Contact_Engine {
         $address_data = Tools::_arr(isset($data['address']) ? $data['address'] : array());
         $phone_number_data = Tools::_arr(isset($data['phone_number']) ? $data['phone_number'] : array());
         $mail_address_data = Tools::_arr(isset($data['mail_address']) ? $data['mail_address'] : array());
+        $keyword_data = Tools::_arr(isset($data['keyword']) ? $data['keyword'] : array());
         $contact_category_id_data = Tools::_arr(isset($data['contact_category_id']) ? $data['contact_category_id'] : array());
+        $company_id_data = Tools::_arr(isset($data['company_id']) ? $data['company_id'] : array());
       
         $temp = Contact_Data_Support::contact_get($contact_data['id']);
         $contact_db = Tools::_arr(isset($temp['contact']) ? $temp['contact'] : array());
@@ -357,12 +413,28 @@ class Contact_Engine {
                         'mail_address' => Tools::_str($row)
                     );
                 }
+                
+                $c_keyword = array();
+                foreach ($keyword_data as $idx => $row) {
+                    $c_keyword[] = array(
+                        'contact_id' => $contact_id,
+                        'keyword' => Tools::_str($row)
+                    );
+                }
 
                 $c_cc = array();
                 foreach ($contact_category_id_data as $idx => $row) {
                     $c_cc[] = array(
                         'contact_id' => $contact_id,
                         'contact_category_id' => Tools::_str($row)
+                    );
+                }
+                
+                $c_company = array();
+                foreach ($company_id_data as $idx => $row) {
+                    $c_company[] = array(
+                        'contact_id' => $contact_id,
+                        'company_id' => Tools::_str($row)
                     );
                 }
 
@@ -391,12 +463,14 @@ class Contact_Engine {
                 $result['contact'] = $contact;
                 $result['c_address'] = $c_address;
                 $result['c_cc'] = $c_cc;
+                $result['c_company'] = $c_company;
                 $result['c_phone_number'] = $c_phone_number;
                 $result['c_mail_address'] = $c_mail_address;
+                $result['c_keyword'] = $c_keyword;
                 //</editor-fold>
                 break;
         }
-
+        
         return $result;
         //</editor-fold>
     }
@@ -412,8 +486,10 @@ class Contact_Engine {
         $fcontact = $final_data['contact'];
         $fc_address = $final_data['c_address'];
         $fc_cc = $final_data['c_cc'];
+        $fc_company = $final_data['c_company'];
         $fc_phone_number = $final_data['c_phone_number'];
         $fc_mail_address = $final_data['c_mail_address'];
+        $fc_keyword = $final_data['c_keyword'];
 
         $modid = User_Info::get()['user_id'];
         $moddate = Date('Y-m-d H:i:s');
@@ -460,6 +536,18 @@ class Contact_Engine {
                 }
             }
         }
+        
+        if ($success === 1) {
+            foreach ($fc_company as $idx => $row) {
+                $row['contact_id'] = $contact_id;
+                if (!$db->insert('c_company', $row)) {
+                    $msg[] = $db->_error_message();
+                    $db->trans_rollback();
+                    $success = 0;
+                    break;
+                }
+            }
+        }
 
         if ($success === 1) {
             foreach ($fc_phone_number as $idx => $row) {
@@ -477,6 +565,18 @@ class Contact_Engine {
             foreach ($fc_mail_address as $idx => $row) {
                 $row['contact_id'] = $contact_id;
                 if (!$db->insert('c_mail_address', $row)) {
+                    $msg[] = $db->_error_message();
+                    $db->trans_rollback();
+                    $success = 0;
+                    break;
+                }
+            }
+        }
+        
+        if ($success === 1) {
+            foreach ($fc_keyword as $idx => $row) {
+                $row['contact_id'] = $contact_id;
+                if (!$db->insert('c_keyword', $row)) {
                     $msg[] = $db->_error_message();
                     $db->trans_rollback();
                     $success = 0;
@@ -502,8 +602,10 @@ class Contact_Engine {
         $fcontact = $final_data['contact'];
         $fc_address = $final_data['c_address'];
         $fc_cc = $final_data['c_cc'];
+        $fc_company = $final_data['c_company'];
         $fc_phone = $final_data['c_phone_number'];
         $fc_mail_address = $final_data['c_mail_address'];
+        $fc_keyword = $final_data['c_keyword'];
 
         $modid = User_Info::get()['user_id'];
         $moddate = Date('Y-m-d H:i:s');
@@ -557,6 +659,23 @@ class Contact_Engine {
             }
         }
 
+        if (!$db->query('delete from c_company where contact_id = ' . $db->escape($contact_id))) {
+            $msg[] = $db->_error_message();
+            $db->trans_rollback();
+            $success = 0;
+        }
+
+        if ($success === 1) {
+            foreach ($fc_company as $idx => $row) {
+                if (!$db->insert('c_company', $row)) {
+                    $msg[] = $db->_error_message();
+                    $db->trans_rollback();
+                    $success = 0;
+                    break;
+                }
+            }
+        }
+
         if (!$db->query('delete from c_mail_address where contact_id = ' . $db->escape($contact_id))) {
             $msg[] = $db->_error_message();
             $db->trans_rollback();
@@ -566,6 +685,23 @@ class Contact_Engine {
         if ($success === 1) {
             foreach ($fc_mail_address as $idx => $row) {
                 if (!$db->insert('c_mail_address', $row)) {
+                    $msg[] = $db->_error_message();
+                    $db->trans_rollback();
+                    $success = 0;
+                    break;
+                }
+            }
+        }
+        
+        if (!$db->query('delete from c_keyword where contact_id = ' . $db->escape($contact_id))) {
+            $msg[] = $db->_error_message();
+            $db->trans_rollback();
+            $success = 0;
+        }
+
+        if ($success === 1) {
+            foreach ($fc_keyword as $idx => $row) {
+                if (!$db->insert('c_keyword', $row)) {
                     $msg[] = $db->_error_message();
                     $db->trans_rollback();
                     $success = 0;

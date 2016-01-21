@@ -32,12 +32,11 @@ class Contact extends MY_ICES_Controller {
         $form = $row->form_add()->form_set('title', Lang::get('Contact', 'List'))->form_set('span', '12');
         $form->form_group_add()->button_add()->button_set('class', 'primary')->button_set('value', Lang::get(array('New', 'Contact')))
                 ->button_set('icon', 'fa fa-plus')->button_set('href', ICES_Engine::$app['app_base_url'] . 'contact/add');
-
-				
 				
         $cols = array(
-            array("name" => "contact_name", "label" => "Name", "data_type" => "text", "is_key" => true),
-            array("name" => "contact_category_text", "label" => "Contact Category", "data_type" => "text"),
+            array("name" => "contact_name", "label" => "Name", "data_type" => "text", "is_key" => true,'attribute' => array('style' => 'text-align:left;min-width:200px')),
+            array("name" => "contact_category_text", "label" => "Contact Category", "data_type" => "text",'attribute' => array('style' => 'text-align:left;min-width:150px')),
+            array("name" => "company_name", "label" => "Company", "data_type" => "text"),
             array("name" => "contact_phone_number", "label" => "Phone", "data_type" => "text"),
             array("name" => "contact_status", "label" => "Status", "data_type" => "text"),
         );
@@ -100,6 +99,7 @@ class Contact extends MY_ICES_Controller {
                     , array("id" => '#detail_tab', "value" => "Detail", 'class' => 'active'));
             $detail_pane = $detail_tab->div_add()->div_set('id', 'detail_tab')->div_set('class', 'tab-pane active');
             Contact_Renderer::contact_render($app, $detail_pane, array("id" => $id), $this->path, $method);
+            
             if ($method === 'view') {
                 $history_tab = $nav_tab->nav_tab_set('items_add'
                         , array("id" => '#status_log_tab', "value" => "Status Log"));
@@ -154,12 +154,15 @@ class Contact extends MY_ICES_Controller {
                     'query' => array(
                         'basic' => '
                             select * from (
-                                select c.id, c.name contact_name,c.contact_status
+                                select c.id, c.name contact_name,c.contact_status, ckey.keyword kyw,cmp. name company_name
                                   ,replace(GROUP_CONCAT(DISTINCT cc.name),",",", ")contact_category_text
                                   ,replace(GROUP_CONCAT(DISTINCT cpn.phone_number),",",", ")contact_phone_number
                                   from contact c
                                   left outer join c_cc ccc on c.id = ccc.contact_id
-                                  left outer join contact_category cc on cc.id = ccc.contact_category_id
+                                  left outer join contact_category cc on cc.id = ccc.contact_category_id                                  
+                                  left outer join c_keyword ckey on c.id = ckey.contact_id
+                                  left outer join c_company cpy on c.id = cpy.contact_id
+                                  left outer join company cmp on cmp.id = cpy.company_id      
                                   left outer join c_phone_number cpn on cpn.contact_id = c.id
                                   where c.status>0 and cc.status>0
                                   group by c.id
@@ -170,7 +173,8 @@ class Contact extends MY_ICES_Controller {
                                 contact_category_text LIKE ' . $lookup_str . ' 
                                 or contact_phone_number LIKE ' . $lookup_str . '
                                 or contact_status LIKE ' . $lookup_str . '  
-                                or contact_name LIKE ' . $lookup_str . '       
+                                or contact_name LIKE ' . $lookup_str . '     
+                                or kyw LIKE ' . $lookup_str . '    
                             )
                         ',
                         'group' => '
@@ -224,8 +228,10 @@ class Contact extends MY_ICES_Controller {
 
                     $address = $temp['c_address'];
                     $mail_address = $temp['c_mail_address'];
+                    $keyword = $temp['c_keyword'];
                     $phone_number = $temp['c_phone_number'];
                     $contact_category = $temp['c_cc'];
+                    $company = $temp['c_company'];
 
                     foreach ($contact_category as $idx => $row) {
                         $contact_category[$idx] = array(
@@ -233,7 +239,14 @@ class Contact extends MY_ICES_Controller {
                             'text' => Tools::html_tag('strong', $row['code']) . ' ' . $row['name']
                         );
                     }
-
+                    
+                    foreach ($company as $idx => $row) {
+                        $company[$idx] = array(
+                            'id' => $row['id'],
+                            'text' => Tools::html_tag('strong', $row['code']) . ' ' . $row['name']
+                        );
+                    }
+                    
                     foreach ($phone_number as $idx => $row) {
                         $phone_number[$idx] = array(
                             'phone_number_type_id' => $row['phone_number_type_id'],
@@ -249,8 +262,10 @@ class Contact extends MY_ICES_Controller {
                     $response['contact'] = $contact;
                     $response['address'] = $address;
                     $response['mail_address'] = $mail_address;
+                    $response['keyword'] = $keyword;
                     $response['phone_number'] = $phone_number;
                     $response['contact_category'] = $contact_category;
+                    $response['company'] = $company;
                     $response['contact_status_list'] = $next_allowed_status_list;
                 }
                 //</editor-fold>
@@ -277,6 +292,18 @@ class Contact extends MY_ICES_Controller {
                     );
                 }
                 $response = $t_phone_number_type;
+                //</editor-fold>
+                break;
+            case 'company_get':
+                //<editor-fold defaultstate="collapsed">
+                $t_company = Contact_Data_Support::company_get();
+                foreach ($t_company as $idx => $row) {
+                    $t_company[$idx] = array(
+                        'id' => $row['id'],
+                        'text' => Tools::html_tag('strong', $row['code']) . ' ' . $row['name']
+                    );
+                }
+                $response = $t_company;
                 //</editor-fold>
                 break;
         }

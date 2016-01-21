@@ -88,6 +88,18 @@ class Contact_Renderer {
                     )
                 ))
         ;
+        
+        $form->table_input_add()->table_input_set('id', $id_prefix . '_tbl_company')
+                ->main_div_set('class', 'form-group hide_all')
+                ->label_set('value', '')
+                ->table_input_set('columns', array(
+                    'col_name' => 'company'
+                    , 'col_id_exists' => true
+                    , 'th' => array('val' => 'Company', 'visible' => true)
+                    , 'td' => array('val' => '', 'tag' => 'input', 'attr' => array('original' => ''), 'class' => '', 'visible' => true
+                    )
+                ))
+        ;
 
         $form->input_add()->input_set('label', Lang::get('Name'))
                 ->input_set('id', $id_prefix . '_name')
@@ -142,6 +154,17 @@ class Contact_Renderer {
                     )
                 ))
         ;
+        
+        $form->table_input_add()->table_input_set('id', $id_prefix . '_tbl_keyword')
+                ->main_div_set('class', 'form-group hide_all')
+                ->label_set('value', '')
+                ->table_input_set('columns', array(
+                    'col_name' => 'keyword'
+                    , 'th' => array('val' => 'Keyword', 'visible' => true)
+                    , 'td' => array('val' => '', 'tag' => 'input', 'class' => 'form-control', 'visible' => true, 'attr' => array('type' => 'text')
+                    )
+                ))
+        ;
 
         $form->textarea_add()->textarea_set('label','Notes')
                 ->textarea_set('id',$id_prefix.'_notes')
@@ -188,7 +211,13 @@ class Contact_Renderer {
         $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'contact/contact_contact_category_js', $param, TRUE);
         $app->js_set($js);
 
+        $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'contact/contact_company_js', $param, TRUE);
+        $app->js_set($js);
+        
         $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'contact/contact_mail_address_js', $param, TRUE);
+        $app->js_set($js);
+        
+        $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'contact/contact_keyword_js', $param, TRUE);
         $app->js_set($js);
 
         $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'contact/contact_address_js', $param, TRUE);

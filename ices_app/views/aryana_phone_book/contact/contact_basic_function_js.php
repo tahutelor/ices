@@ -47,12 +47,14 @@
                 case 'view':
                     $(lparent_pane).find(lprefix_id + '_code').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_tbl_contact_category').closest('div [class*="form-group"]').show();
+                    $(lparent_pane).find(lprefix_id + '_tbl_company').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_name').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_contact_status').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_birthdate').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_tbl_mail_address').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_tbl_address').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_tbl_phone_number').closest('div [class*="form-group"]').show();
+                    $(lparent_pane).find(lprefix_id + '_tbl_keyword').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_notes').closest('div [class*="form-group"]').show();
                     break;
             }
@@ -99,9 +101,11 @@
             $(lparent_pane).find(lprefix_id + '_notes').val('');
                     
             contact_mail_address_methods.load_mail_address({mail_address: []});
+            contact_keyword_methods.load_keyword({keyword: []});
             contact_address_methods.load_address({address: []});
             contact_phone_number_methods.load_phone_number({phone_number: []});
             contact_contact_category_methods.load_contact_category({contact_category: []});
+            contact_company_methods.load_company({company: []});
         },
         after_submit: function(){
             
@@ -127,7 +131,9 @@
                     json_data.contact.birthdate = $(lparent_pane).find(lprefix_id + "_birthdate").val() === ''?null:(new Date($(lparent_pane).find(lprefix_id + "_birthdate").val())).format('Y-m-d H:i:s');
                     json_data.contact.notes = $(lparent_pane).find(lprefix_id + "_notes").val();
                     json_data.contact_category_id = contact_tbl_contact_category_method.setting.func_get_data_table().contact_category_id;
+                    json_data.company_id = contact_tbl_company_method.setting.func_get_data_table().company_id;
                     json_data.mail_address = contact_tbl_mail_address_method.setting.func_get_data_table().mail_address;
+                    json_data.keyword = contact_tbl_keyword_method.setting.func_get_data_table().keyword;
                     json_data.address = contact_tbl_address_method.setting.func_get_data_table().address;
                     json_data.phone_number = contact_tbl_phone_number_method.setting.func_get_data_table().phone_number;
                     
@@ -167,9 +173,11 @@
         });
 
         contact_mail_address_bind_event();
+        contact_keyword_bind_event();
         contact_address_bind_event();
         contact_phone_number_bind_event();
         contact_contact_category_bind_event();
+        contact_company_bind_event();
     }
 
     var contact_components_prepare = function () {
@@ -203,9 +211,11 @@
 
                         $(lparent_pane).find(lprefix_id + '_birthdate').val(lcontact.birthdate!== null?APP_CONVERTER._date(lcontact.birthdate, 'F d, Y H:i'):null);
                         contact_mail_address_methods.load_mail_address({mail_address: lresponse.mail_address});
+                        contact_keyword_methods.load_keyword({keyword: lresponse.keyword});
                         contact_address_methods.load_address({address: lresponse.address});
                         contact_phone_number_methods.load_phone_number({phone_number: lresponse.phone_number});
                         contact_contact_category_methods.load_contact_category({contact_category: lresponse.contact_category});
+                        contact_company_methods.load_company({company: lresponse.company});
                         
                     }
                     ;
