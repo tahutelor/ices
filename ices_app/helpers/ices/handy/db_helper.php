@@ -10,6 +10,10 @@ class DB{
         //</editor-fold>
     }
     
+    public function db_get(){
+        return $this->db;
+    }
+    
     public function __construct($param = array()){
         $db_name = isset($param['db_name'])?$param['db_name']:
             (isset(ICES_Engine::$app['app_db_conn_name'])?
@@ -76,8 +80,8 @@ class DB{
     }
     
     
-    public function query($sql){
-        return $this->db->query($sql);
+    public function query($sql,$binds=FALSE,$return_object=TRUE){
+        return $this->db->query($sql,$binds,$return_object);
 
     }
     
@@ -144,9 +148,8 @@ class DB{
     }
     
     public function _error_message(){
-        if(ENVIRONMENT === 'development'){
-            return $this->db->_error_message();
-        }
+        return $this->db->_error_message();
+        
     }
     
     public function close(){

@@ -15,18 +15,29 @@
             });
             contact_tbl_company_method.input_row_generate({});
         },
-        company_get:function(){
+        company_get:function(ilookup_str){
             var lparent_pane = contact_parent_pane;
             var lprefix_id = contact_component_prefix_id;
             var lresult = [];
             var lcompany_id_div = $(lparent_pane).find(lprefix_id+'_tbl_company tbody [col_name="company_id"] div');
+            
+            var lajax_url = '<?php echo $ajax_url . 'company_search/'; ?>';
+        
+            company_data.company = [];
+            var lresponse = APP_DATA_TRANSFER.ajaxPOST(lajax_url, {data: ilookup_str}).response;
+            $.each(lresponse, function(lidx, lrow) {
+                company_data.company.push(lrow);
+            });
             
             $.each(company_data.company,function(lidx, lrow){    
                 var lexists = false;
                 $.each(lcompany_id_div, function(lidx2, lrow2){
                     if(lrow.id === $(lrow2)[0].innerHTML) lexists = true;     
                 });
-                if(!lexists) lresult.push(lrow);
+                if(!lexists){
+                        lresult.push(lrow);
+                }
+                
             });
             return lresult;
         }
@@ -35,13 +46,7 @@
     var contact_company_bind_event = function() {
         var lparent_pane = contact_parent_pane;
         var lprefix_id = contact_component_prefix_id;
-        var lajax_url = '<?php echo $data_support_url . 'company_get'; ?>';
         
-        company_data.company = [];
-        var lresponse = APP_DATA_TRANSFER.ajaxPOST(lajax_url, {}).response;
-        $.each(lresponse, function(lidx, lrow) {
-            company_data.company.push(lrow);
-        });
         
         contact_tbl_company_method.setting.func_new_row_validation = function(iopt) {
             var lresult = {success: 1, msg: []};
@@ -98,13 +103,18 @@
 <?php // --- End Of Show and Hide phase ---                   ?>
 
             if (Object.keys(ldata_row).length === 0) {
-
+                var company_timeout;
                 $(lrow).find('[col_name ="company"] input[original]').select2({
                     allowClear: true,
                     query:function(query){
-                        var data={results:[]};
-                        data.results = contact_company_methods.company_get();
-                        query.callback(data);
+                        window.clearTimeout(company_timeout);
+                        company_timeout = window.setTimeout(function(){
+                            var data={results:[]};
+                            var llookup_str = query.term.toLowerCase().trim();
+                            data.results = contact_company_methods.company_get(llookup_str);
+                            query.callback(data);
+                        },250);
+                        
                     }
                 });
                 

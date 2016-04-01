@@ -381,6 +381,13 @@ class Printer {
         $this->fpdf->SetXY($x,$y);
         //</editor-fold>
     }
+	
+	function text_height_get($col_width = null, $text=''){
+        //<editor-fold defaultstate="collapsed">
+        return $this->fpdf->NbLines($col_width, $text) * $this->fpdf->LineHeight;
+        
+        //</editor-fold>
+    }
 }
 
 ?>

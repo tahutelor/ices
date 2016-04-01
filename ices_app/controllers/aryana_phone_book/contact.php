@@ -141,11 +141,14 @@ class Contact extends MY_ICES_Controller {
 
     public function ajax_search($method = '') {
         //<editor-fold defaultstate="collapsed">
+        $path = Contact_Engine::path_get();
+        get_instance()->load->helper($path->contact_data_support);
         $data = json_decode($this->input->post(), true);
         $lookup_data = isset($data['data']) ? Tools::_str($data['data']) : '';
         $result = array();
         switch ($method) {
             case 'contact':
+                //<editor-fold defaultstate="collapsed">
                 $db = new DB();
                 $lookup_str = $db->escape('%' . $lookup_data . '%');
                 $config = array(
@@ -154,18 +157,21 @@ class Contact extends MY_ICES_Controller {
                     'query' => array(
                         'basic' => '
                             select * from (
-                                select c.id, c.name contact_name,c.contact_status, ckey.keyword kyw,cmp. name company_name
-                                  ,replace(GROUP_CONCAT(DISTINCT cc.name),",",", ")contact_category_text
-                                  ,replace(GROUP_CONCAT(DISTINCT cpn.phone_number),",",", ")contact_phone_number
+                                select distinct c.id, c.name contact_name,c.contact_status, ckey.keyword kyw, cmp.name company_name
+                                  ,contact_category_text,contact_phone_number
                                   from contact c
-                                  left outer join c_cc ccc on c.id = ccc.contact_id
-                                  left outer join contact_category cc on cc.id = ccc.contact_category_id                                  
+                                  left outer join (select ccc.contact_id,replace(GROUP_CONCAT(DISTINCT cc.name),",",", ")contact_category_text
+                                                    from c_cc ccc
+                                                    left outer join contact_category cc on cc.id = ccc.contact_category_id
+                                                    GROUP BY ccc.contact_id) cc on cc.contact_id = c.id
+                                  left outer join (select cpn.contact_id,replace(GROUP_CONCAT(DISTINCT cpn.phone_number),",",", ")contact_phone_number
+                                                    from contact c
+                                                    left outer join c_phone_number cpn on cpn.contact_id = c.id
+                                                    GROUP BY cpn.contact_id) cpn on cpn.contact_id = c.id 
                                   left outer join c_keyword ckey on c.id = ckey.contact_id
                                   left outer join c_company cpy on c.id = cpy.contact_id
                                   left outer join company cmp on cmp.id = cpy.company_id      
-                                  left outer join c_phone_number cpn on cpn.contact_id = c.id
-                                  where c.status>0 and cc.status>0
-                                  group by c.id
+                                  where c.status>0
                             )tf
                             where 1=1',
                         'where' => '
@@ -174,11 +180,12 @@ class Contact extends MY_ICES_Controller {
                                 or contact_phone_number LIKE ' . $lookup_str . '
                                 or contact_status LIKE ' . $lookup_str . '  
                                 or contact_name LIKE ' . $lookup_str . '     
+                                or company_name LIKE ' . $lookup_str . '     
                                 or kyw LIKE ' . $lookup_str . '    
                             )
                         ',
                         'group' => '
-                            
+                            group by contact_name
                         ',
                         'order' => 'order by contact_name asc'
                     ),
@@ -192,7 +199,20 @@ class Contact extends MY_ICES_Controller {
                 }
                 $temp_result = json_decode(json_encode($temp_result), true);
                 $result = $temp_result;
-
+                //</editor-fold>
+                break;
+            case 'company_search':
+                //<editor-fold defaultstate="collapsed">
+                $t_company = Contact_Data_Support::company_search($lookup_data);
+                foreach ($t_company as $idx => $row) {
+                    $t_company[$idx] = array(
+                        'id' => $row['id'],
+                        'text' => Tools::html_tag('strong', $row['code']) . ' ' . $row['name']
+                    );
+                }
+                $response = $t_company;
+                $result['response'] = $response;
+                //</editor-fold>
                 break;
         }
 
@@ -294,18 +314,7 @@ class Contact extends MY_ICES_Controller {
                 $response = $t_phone_number_type;
                 //</editor-fold>
                 break;
-            case 'company_get':
-                //<editor-fold defaultstate="collapsed">
-                $t_company = Contact_Data_Support::company_get();
-                foreach ($t_company as $idx => $row) {
-                    $t_company[$idx] = array(
-                        'id' => $row['id'],
-                        'text' => Tools::html_tag('strong', $row['code']) . ' ' . $row['name']
-                    );
-                }
-                $response = $t_company;
-                //</editor-fold>
-                break;
+            
         }
         $result['success'] = $success;
         $result['msg'] = $msg;

@@ -8,8 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="robots" content="noindex,nofollow">
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' >
-<?php if($company === 'aryana')echo '<title>Integrated Civil Engineering System</title>';
-    else echo '<title>Integrated & Computerized Enterprise System</title>'; ?>
+<?php echo '<title>Integrated & Computerized Enterprise System</title>'; 
+?>
 <link rel="icon" href="<?php echo $lib_root ?>img/ices/system.png">
 <link href="<?php echo $lib_root ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $lib_root ?>css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -58,15 +58,14 @@
             </div>
         </div>
         <h1 style="font-family: Adobe Caslon Pro;font-weight:normal;">
-            <?php if($company === 'aryana'){echo 'Integrated Civil Engineering System  (ICES)';}
-                else {echo 'Integrated & Computerized Enterprise System  (ICES)';} 
+            <?php echo 'Integrated & Computerized Enterprise System  (ICES)';
             ?>
         </h1>
         <h3>fast, precise, reliable </h3>
         <div class="main" style="margin-top:80px">
                 <div class="mcontent">
                     <div style="float:left;width:30px;height:30px;margin-top:50px;display:none">
-                    <a id = 'left_control' href="#" style=''><div style='position:relative;top:-12px;'>‹</div></a>
+                    <a id = 'left_control' href="#" style=''><div style='position:relative;top:-11px;width:100%;height:100%'>‹</div></a>
                     </div>
                     <div class='carousel slide' style='float:left;width:690px'>
                         <div class="carousel-inner" role="listbox" style="white-space:nowrap">
@@ -74,7 +73,7 @@
                         
                     </div>
                     <div style="float:left;width:30px;height:30px;margin-top:50px;display:none">
-                    <a id = 'right_control' href="#" style=''><div style='position:relative;top:-12px;'>›</div></a>
+                    <a id = 'right_control' href="#" style=''><div style='position:relative;top:-11px;width:100%;height:100%'>›</div></a>
                     </div>
                 </div>
         </div>
@@ -151,12 +150,11 @@
         </div>
         </div>
     </div>
-        </section>
+    </section>
     
     <div style="">
     <p style="text-align:center;color:#2a6888">
-        <?php if($company === 'aryana')echo 'PT. Aryana Cakasana - 2015'; 
-            else echo 'ICES - 2015';
+        <?php echo 'ICES v1.0 - 2015';
         ?>
     </p>
     </div>

@@ -22,10 +22,11 @@ class Company_Data_Support {
         //</editor-fold>
     }
 
-    public static function company_list_get($param = array()) {
+    public static function company_search($param = array()) {
         //<editor-fold defaultstate="collapsed">
         $db = new DB();
         $result = array();
+        $lookup_str = $param['lookup_str'];
         $q_pnt_status = isset($param['company_status'])?
             ' and company_status = '.$db->escape($param['company_status']):
             '';
@@ -33,10 +34,14 @@ class Company_Data_Support {
         $q = '
             select *
             from company
-            where status>0'
-                .$q_pnt_status
-        .'';
-        $rs = $db->query_array($q);
+            where status>0
+                and company.name like '.$db->escape('%'.$lookup_str.'%').'
+            
+                '.$q_pnt_status.'
+                
+        ';
+        $rs = $db->query_array($q,1000);
+        
         if(count($rs)>0){
             $result = $rs;
         }

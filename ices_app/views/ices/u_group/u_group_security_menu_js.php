@@ -111,17 +111,11 @@
             
             ajax_url +=lajax_method+'/';
             
-            result = APP_DATA_TRANSFER.submit(ajax_url,json_data);
-            if(result.success ===1){
-                $(security_menu_parent_pane).find(lprefix_id+'_id').val(result.trans_id);
-                if(security_menu_view_url !==''){
-                    var url = security_menu_view_url+result.trans_id;
-                    window.location.href=url;
-                }
-                else{
-                    security_menu_after_submit();
-                }
-            }
+            var lresult = {
+                json_data:json_data,
+                ajax_url:ajax_url,
+            };
+            return lresult;
         },
         menu_table:{
             draw:function(iData){
@@ -164,8 +158,10 @@
         
         $(lparent_pane).find(lprefix_id+'_btn_submit').off('click');
         APP_COMPONENT.button.submit.set($(lparent_pane).find(lprefix_id+'_btn_submit'),{
-            parent_pane:lparent_pane,
-            module_method:security_menu_methods,
+            parent_pane: lparent_pane,
+            module_method: security_menu_methods,
+            view_url: security_menu_view_url,
+            prefix_id:lprefix_id,
             window_scroll:security_menu_window_scroll,
         });
         

@@ -3,7 +3,8 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Common_Ajax_Listener extends MY_ICES_Controller {
+class Common_Ajax_Listener extends MY_Extended_Controller {
+//class Common_Ajax_Listener extends MY_ICES_Controller {
 
     public function index() {
         

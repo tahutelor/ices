@@ -61,6 +61,20 @@ $(function() {
             $('.row-offcanvas').toggleClass("relative");
             $.AdminLTE._fix();
             
+            /*
+             * Modified by Edwin 2016-03-04
+             */
+            if($('.row-offcanvas.active').length>0){
+                var lright_width = $('#div_wrapper').width() - $('.left-side').width();
+                $('.right-side').width(lright_width);
+            }
+            else{
+                 $('.right-side').width('');
+            }
+            /*
+             * end of modification
+             */
+            
         } else {
             //Else, enable content streching
             $('.left-side').toggleClass("collapse-left");

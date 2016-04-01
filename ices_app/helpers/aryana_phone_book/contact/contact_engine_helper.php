@@ -118,6 +118,7 @@ class Contact_Engine {
                     //validate if empty field
                     $name = Tools::empty_to_null(Tools::_str($contact['name']));
                     $code = Tools::empty_to_null(Tools::_str($contact['code']));
+                    $notes = Tools::empty_to_null(Tools::_str($contact['notes']));
                     $birthdate = Tools::empty_to_null(Tools::_date($contact['birthdate']));
 
                     foreach ($address as $idx => $row) {
@@ -370,6 +371,7 @@ class Contact_Engine {
         $result = array();
 
         $contact_data = isset($data['contact']) ? $data['contact'] : array();
+//        $notes = Tools::_arr(isset($data['notes']) ? $data['notes'] : array());
         $address_data = Tools::_arr(isset($data['address']) ? $data['address'] : array());
         $phone_number_data = Tools::_arr(isset($data['phone_number']) ? $data['phone_number'] : array());
         $mail_address_data = Tools::_arr(isset($data['mail_address']) ? $data['mail_address'] : array());
@@ -393,6 +395,7 @@ class Contact_Engine {
                     'name' => Tools::_str($contact_data['name']),
                     'code' => Tools::_str($contact_data['code']),
                     'birthdate' => Tools::_date($contact_data['birthdate']),
+                    'notes' => Tools::_str($contact_data['notes']),
                     'status' => 1,
                     'modid' => $modid,
                     'moddate' => $datetime_curr,

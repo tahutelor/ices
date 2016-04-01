@@ -196,5 +196,17 @@ class ICES_Engine {
         //<editor-fold>
     }
     
+    public static function app_get($app_name = ''){
+        $result = array();
+        
+        foreach(self::$app_list as $idx=>$row){
+            if($row['val'] === $app_name){
+                $result = $row;
+            }
+        }
+        
+        return $result;
+    }
+    
 }
 ?>

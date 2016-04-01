@@ -6,6 +6,7 @@ class Home extends MY_Extended_Controller {
     }
     
     public function index(){
+        
         $app_base_dir = SI::type_get('ICES_Engine', 'ices','$app_list')['app_base_dir'];
         $this->load->view($app_base_dir.'home/home');
         $this->load->view($app_base_dir.'home/home_js');

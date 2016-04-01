@@ -157,6 +157,7 @@ class Contact_Category extends MY_ICES_Controller {
                         'where' => '
                             and (
                                 t1.contact_category_status like ' . $lookup_str . '
+                                or t1.name like ' . $lookup_str . '
                             )
                         ',
                         'group' => '

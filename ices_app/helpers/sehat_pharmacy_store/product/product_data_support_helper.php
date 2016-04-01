@@ -20,10 +20,15 @@ class Product_Data_Support {
                 ,pu.purchase_amount
                 ,pu.sales_formula
                 ,replace(pu.sales_formula,"c",pu.purchase_amount ) sales_amount
+                ,u2.id unit_sales_id
+                ,u2.code unit_sales_code
+                ,u2.name unit_sales_name
             from product p
                 inner join product_category pc on p.product_category_id = pc.id
                 inner join p_u pu on p.id = pu.product_id
                 inner join unit u on pu.unit_id = u.id
+                inner join p_u_sales pus on p.id = pus.product_id
+                inner join unit u2 on pus.unit_id = u2.id
             where p.id = ' . $db->escape($id) . '
         ';
         $rs = $db->query_array($q);
@@ -77,6 +82,10 @@ class Product_Data_Support {
                 ,u.name unit_name
                 ,coalesce(sum(psg.qty),0) qty
                 ,replace(pu.sales_formula,"c",pu.purchase_amount ) sales_amount
+                ,u_sales.id unit_id_sales
+                ,u_sales.code unit_code_sales
+                ,u_sales.name unit_name_sales
+                ,cast(coalesce(puc.qty / puc.qty2,0) as decimal(20,5)) constant_sales
             from product p
             inner join p_u pu on p.id = pu.product_id
             inner join unit u 
@@ -91,6 +100,14 @@ class Product_Data_Support {
                 and pb.expired_date>now()
             left outer join product_stock_good psg
                 on psg.product_batch_id = pb.id and psg.status > 0
+            inner join p_u_sales pus on p.id = pus.product_id
+            inner join unit u_sales
+                on pus.unit_id = u_sales.id
+                and u_sales.status > 0
+                and u_sales.unit_status = "active"
+            left outer join p_u_conversion puc
+                on puc.unit_id = pus.unit_id
+                and puc.unit_id2 = pu.unit_id
             where p.status > 0
             and (
                 p.code like '.$db->escape($lookup_data).'
@@ -115,6 +132,8 @@ class Product_Data_Support {
                     'name'=>$row['name'],
                     'product_type'=>'registered_product',
                     'unit_description'=>$row['unit_description'],
+                    'barcode'=>$row['barcode'],
+                    
                     'unit'=>array(
                         array(
                             'id'=>$row['unit_id'],
@@ -122,32 +141,35 @@ class Product_Data_Support {
                             'name'=>$row['unit_name'],
                             'qty'=>$row['qty'],
                             'sales_amount' => self::sales_amount_get($row['sales_amount']),
+                            'unit_sales'=>array(
+                                array(
+                                    'id'=>$row['unit_id_sales'],
+                                    'code'=>$row['unit_code_sales'],
+                                    'name'=>$row['unit_name_sales'],
+                                    'constant_sales'=>$row['constant_sales'],
+                                ),
+                            ),
                         )
                     ),
-                    'barcode'=>$row['barcode'],
+                    
+                    
                 );
                                 
-                $product_already_exists = false;
+                $product_exists = false;
+                $product_idx = -1;
                 foreach($result as $idx2=>$row2){
                     if($t_product['id'] === $row2['id']){
-                        $product_already_exists = true;
+                        $product_exists = true;
+                        $product_idx = $idx2;
                         break;
                     }
                 }
                 
-                if(!$product_already_exists){
-                    foreach($rs as $idx2=>$row2){
-                        if($row2['id'] === $t_product['id'] && $idx2 !== $idx){
-                            $t_product['unit'][] = array(
-                                'id'=>$row2['unit_id'],
-                                'code'=>$row2['unit_code'],
-                                'name'=>$row2['unit_name'],
-                                'qty'=>$row2['qty'],
-                                'sales_amount' => self::sales_amount_get($row2['sales_amount']),
-                            );
-                        }
-                    }
+                if($product_exists === FALSE){                    
                     $result[] = $t_product;
+                }
+                else{
+                    $result[$product_idx]['unit'][] = $t_product['unit'][0];
                 }
                 
             }
@@ -161,16 +183,24 @@ class Product_Data_Support {
         $result = array();
         $db = new DB();
         $t_product = self::product_search($param);
-        
+        $t_product = json_decode(json_encode($t_product));
+
         foreach($t_product as $idx=>$row){
-            $t_product[$idx]['text'] = Tools::html_tag('strong',$row['code'])
-                .' '.$row['name'].' '.$row['unit_description'];
-            foreach($t_product[$idx]['unit'] as $idx2=>$row2){
-                $t_product[$idx]['unit'][$idx2]['text'] = Tools::html_tag('strong',$row2['code'])
-                    .' '.$row2['name'];
+            $row->text = Tools::html_tag('strong',$row->code)
+                .' '.$row->name.' '.$row->unit_description;
+            foreach($row->unit as $idx2=>$row2){
+                $row2->text = Tools::html_tag('strong',$row2->code)
+                ;
+                
+                foreach($row2->unit_sales as $idx3=>$row3){
+                    $row3->text = Tools::html_tag('strong',$row3->code)
+                    ;
+                }
             }
+            
         }
-        $result = $t_product;
+        
+        $result = json_decode(json_encode($t_product),true);;
         return $result;
         //</editor-fold>
     }
@@ -259,11 +289,20 @@ class Product_Data_Support {
                 ,u.name unit_name
                 ,coalesce(sum(psg.qty),0) qty
                 ,replace(pu.sales_formula,"c",pu.purchase_amount ) sales_amount
+                ,u_sales.id unit_id_sales
+                ,u_sales.code unit_code_sales
+                ,u_sales.name unit_name_sales
+                ,cast(coalesce(puc.qty / puc.qty2,0) as decimal(20,5)) constant_sales
             from p_u pu
             inner join ('.$q_product.')tp 
                 on pu.product_id = tp.product_id and pu.unit_id = tp.unit_id
             inner join product p on pu.product_id = p.id and p.status > 0
             inner join unit u on pu.unit_id = u.id and u.status > 0
+            inner join p_u_sales pus on p.id = pus.product_id
+            inner join unit u_sales on pus.unit_id = u_sales.id
+            left outer join p_u_conversion puc 
+                on u_sales.id = puc.unit_id 
+                and u.id = puc.unit_id2
             left outer join product_batch pb 
                 on pb.product_id = pu.product_id and pb.product_type = "registered_product"
                 and pb.unit_id = pu.unit_id and pb.status > 0

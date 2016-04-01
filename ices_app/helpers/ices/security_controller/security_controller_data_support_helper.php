@@ -42,6 +42,7 @@ class Security_Controller_Data_Support {
             where sc.app_name = '.$db->escape($app_name).'
                 and sc.status>0
                 '.$q_security_controller_status.'
+                and sc.security_controller_status = "active"
             order by sc.name, sc.method
         ';
         $rs = $db->query_array($q);

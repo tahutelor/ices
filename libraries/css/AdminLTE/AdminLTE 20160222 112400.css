@@ -397,7 +397,7 @@ body > .header .navbar .nav > li > a > .label {
   right: 2px;
   font-size: 10px;
   font-weight: normal;
-  min-width: 15px;
+  width: 15px;
   height: 15px;
   line-height: 1.0em;
   text-align: center;
@@ -697,7 +697,7 @@ body > .header .logo .icon {
 .navbar-nav > .messages-menu > .dropdown-menu > li.header:after,
 .navbar-nav > .tasks-menu > .dropdown-menu > li.header:after {
   bottom: 100%;
-  left: 377px;
+  left: 92%;
   border: solid transparent;
   content: " ";
   height: 0;
@@ -977,19 +977,12 @@ body > .header .logo .icon {
   .navbar-nav > .messages-menu > .dropdown-menu {
     position: absolute;
     top: 100%;
-    left: -120px; /*original value right 0*/
+    right: 0;
     left: auto;
     border-right: 1px solid #dddddd;
     border-bottom: 1px solid #dddddd;
     border-left: 1px solid #dddddd;
     background: #ffffff;
-  }
-  
-  .navbar-nav > .notifications-menu > .dropdown-menu > li.header:after,
-  .navbar-nav > .tasks-menu > .dropdown-menu > li.header:after,
-  .navbar-nav > .messages-menu > .dropdown-menu > li.header:after {
-    /*border-width: 0px!important; original value*/
-    left:140px;
   }
 }
 /* Fix menu positions on xs screens to appear correctly and fully */
@@ -999,12 +992,10 @@ body > .header .logo .icon {
   .navbar-nav > .messages-menu > .dropdown-menu > li.header {
     /* Remove arrow from the top */
   }
-  .navbar-nav > .notifications-menu > .dropdown-menu > li.header:after{
-    /*border-width: 0px!important; original value*/
-    left:90px;
-  }
+  .navbar-nav > .notifications-menu > .dropdown-menu > li.header:after,
+  .navbar-nav > .tasks-menu > .dropdown-menu > li.header:after,
   .navbar-nav > .messages-menu > .dropdown-menu > li.header:after {
-      left:50px;
+    border-width: 0px!important;
   }
   .navbar-nav > .tasks-menu > .dropdown-menu {
     position: absolute;
@@ -1013,16 +1004,14 @@ body > .header .logo .icon {
   }
   .navbar-nav > .notifications-menu > .dropdown-menu {
     position: absolute;
-    left: -70px; /*original value is right -170px*/
-    width: 350px;
+    right: -170px;
+    left: auto;
   }
   .navbar-nav > .messages-menu > .dropdown-menu {
     position: absolute;
-    left: -30px;
-    width:350px;
-    
+    right: -210px;
+    left: auto;
   }
-  
 }
 /* 
    All form elements including input, select, textarea etc.
@@ -1668,7 +1657,7 @@ body > .header .logo .icon {
 }
 .box > .loading-img {
   z-index: 1020;
-  background: transparent url('../img/ajax-loader1.gif') 50% 50% no-repeat;
+  background: transparent url('../../img/ajax-loader1.gif') 50% 50% no-repeat;
 }
 
 .overlay,
@@ -1688,7 +1677,7 @@ body > .header .logo .icon {
 }
 .loading-img {
   z-index: 1020;
-  background: transparent url('../img/ajax-loader1.gif') 50% 50% no-repeat;
+  background: transparent url('../../img/ajax-loader1.gif') 50% 50% no-repeat;
 
 }
 /*
@@ -2782,7 +2771,7 @@ Component: timeline
   padding: 0;
   width: 18px;
   height: 18px;
-  background: rgba(255, 255, 255, 0.7) url(iCheck/minimal/minimal.png) no-repeat;
+  background: rgba(255, 255, 255, 0.7) url(../iCheck/minimal/minimal.png) no-repeat;
   border: none;
   cursor: pointer;
 }
@@ -2826,7 +2815,7 @@ Component: timeline
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5) {
   .icheckbox_minimal,
   .iradio_minimal {
-    background-image: url('iCheck/minimal/minimal@2x.png');
+    background-image: url('../iCheck/minimal/minimal@2x.png');
     -webkit-background-size: 200px 20px;
     background-size: 200px 20px;
   }

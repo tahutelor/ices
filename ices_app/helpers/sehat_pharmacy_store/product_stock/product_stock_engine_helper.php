@@ -220,16 +220,19 @@ class Product_Stock_Engine {
                             select * from '.$tbl_name.'
                             where product_batch_id = '.$db->escape($product_batch_id).'
                                 and warehouse_id = '.$db->escape($warehouse_id).'
+                                and qty >= 0
                         ';
-
-                        $product_stock = $db->query_array_obj($q)[0];
-                        $trans_id = $product_stock->id;
-                        
-                        if(Tools::_float($product_stock->qty)<Tools::_float('0')){
+                        $rs = $db->query_array_obj($q);
+                        if(!count($rs)>0){
                             $success = 0;
                             $msg[] = 'Stock Qty less than 0';
                             $db->trans_rollback();
                         }
+                        else{
+                            $product_stock = $db->query_array_obj($q)[0];
+                            $trans_id = $product_stock->id;
+                        }
+                        
                     }
                     
                     if($success === 1){

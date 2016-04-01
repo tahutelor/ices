@@ -52,6 +52,11 @@ class Security_Menu_Engine {
                                 'id' => 's_s_cmp',
                                 "properties" => array("class" => "fa fa-th")
                                 , "ref" => $ices_app_base_url . "security_component"
+                            ),
+                            Lang::get("Backup") => array(
+                                'id' => 's_s_b',
+                                "properties" => array("class" => "fa fa-th")
+                                , "ref" => $ices_app_base_url . "sys_backup"
                             )
                         )
                     )
@@ -113,7 +118,8 @@ class Security_Menu_Engine {
                         'id' => 'm_cpn'
                         , "properties" => array("class" => "fa fa-th")
                         , "ref" => $phone_book_app_base_url . "company"
-                    )
+                    ), 
+                    
                 )
             ),
             Lang::get("List") => array(

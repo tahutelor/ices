@@ -157,6 +157,7 @@ class Phone_Number_Type extends MY_ICES_Controller {
                         'where' => '
                             and (
                                 t1.phone_number_type_status like ' . $lookup_str . '
+                                or t1.name like ' . $lookup_str . '
                             )
                         ',
                         'group' => '

@@ -148,6 +148,22 @@ class Sales_Invoice_Renderer {
                 ->table_input_set('columns', array(
                     'col_id_exists' => true,
                     'col_name' => 'unit',
+                    'th' => array('val' => Lang::get('Unit'), 'visible' => false,'col_style'=>'width:75px'),
+                    'td' => array('val' => '', 'tag' => 'div', 
+                        'attr' => array(), 
+                        'class' => '', 'visible' => false
+                    ),
+                ))
+                ->table_input_set('columns', array(
+                    'col_name' => 'unit_id_sales',
+                    'th' => array('val' => Lang::get(''), 'visible' => false,'col_style'=>'width:75px'),
+                    'td' => array('val' => '', 'tag' => 'div', 
+                        'attr' => array(), 
+                        'class' => '', 'visible' => false
+                    ),
+                ))
+                ->table_input_set('columns', array(
+                    'col_name' => 'unit_sales',
                     'th' => array('val' => Lang::get('Unit'), 'visible' => true,'col_style'=>'width:75px'),
                     'td' => array('val' => '', 'tag' => 'div', 
                         'attr' => array(), 
@@ -184,6 +200,14 @@ class Sales_Invoice_Renderer {
                     'td' => array('val' => '', 'tag' => 'div','col_style'=>'width:150px;text-align:right',
                         'attr' => array(), 
                         'class' => '', 'visible' => true
+                    ),
+                ))
+                ->table_input_set('columns', array(
+                    'col_name' => 'constant_sales',
+                    'th' => array('val' => '', 'visible' => false,'col_style'=>''),
+                    'td' => array('val' => '', 'tag' => 'div','col_style'=>'text-align:right' ,
+                        'attr' => array(), 
+                        'class' => '', 'visible' => false
                     ),
                 ))
                 

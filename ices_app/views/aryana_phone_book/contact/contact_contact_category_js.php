@@ -15,7 +15,7 @@
             });
             contact_tbl_contact_category_method.input_row_generate({});
         },
-        contact_category_get:function(){
+        contact_category_get:function(ilookup_str){
             var lparent_pane = contact_parent_pane;
             var lprefix_id = contact_component_prefix_id;
             var lresult = [];
@@ -26,7 +26,11 @@
                 $.each(lcontact_category_id_div, function(lidx2, lrow2){
                     if(lrow.id === $(lrow2)[0].innerHTML) lexists = true;     
                 });
-                if(!lexists) lresult.push(lrow);
+                if(!lexists){
+                    if(lrow.text.toLowerCase().trim().indexOf(ilookup_str)!== -1){
+                        lresult.push(lrow);
+                    }
+                }
             });
             return lresult;
         }
@@ -103,7 +107,8 @@
                     allowClear: true,
                     query:function(query){
                         var data={results:[]};
-                        data.results = contact_contact_category_methods.contact_category_get();
+                        var llookup_str = query.term.toLowerCase().trim();
+                        data.results = contact_contact_category_methods.contact_category_get(llookup_str);
                         query.callback(data);
                     }
                 });

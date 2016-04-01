@@ -165,9 +165,7 @@ function _on_shutdown(){
         );
         
         if($ajax_post){
-            if(ob_get_contents()){
-                ob_clean();
-            }
+            if(ob_get_contents()) ob_clean ();
             $result = array('success'=>0,
                 'msg'=>array(
                     'Severity: '.$levels[$error['type']],
@@ -180,6 +178,7 @@ function _on_shutdown(){
             
         }
     }
+    while (@ob_end_flush());
     //</editor-fold>
 }
 

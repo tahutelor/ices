@@ -22,7 +22,7 @@
     }
 
     var product_data = {
-        unit_default:{}
+        unit_default:<?php echo json_encode($unit_default); ?>,
     }
 
     var product_methods = {
@@ -57,6 +57,7 @@
                     $(lparent_pane).find(lprefix_id + '_product_status').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_product_category').closest('div [class*="form-group"]').show();
                     $(lparent_pane).find(lprefix_id + '_unit').closest('div [class*="form-group"]').show();
+                    $(lparent_pane).find(lprefix_id + '_unit_sales').closest('div [class*="form-group"]').show();
                     break;
             }
 
@@ -85,6 +86,7 @@
                     $(lparent_pane).find(lprefix_id + '_print_product_status').select2('enable');
                     $(lparent_pane).find(lprefix_id + '_product_status').select2('enable');
                     $(lparent_pane).find(lprefix_id + '_unit').select2('enable');
+                    $(lparent_pane).find(lprefix_id + '_unit_sales').select2('enable');
                     break;
             }
         },
@@ -103,8 +105,7 @@
                     'product',
                     $(lparent_pane).find(lprefix_id + '_product_status')
                     );
-            console.log(product_data);
-            $(lparent_pane).find(lprefix_id+'_unit').select2('data',product_data.unit_default);
+            $(lparent_pane).find(lprefix_id+'_unit').select2('data',product_data.unit_default).change();
             $(lparent_pane).find(lprefix_id+'_product_category').select2('data',null);
         },
         after_submit: function(){
@@ -131,6 +132,7 @@
                     json_data.product.barcode = $(lparent_pane).find(lprefix_id + "_barcode").val();
                     json_data.product.sales_formula = $(lparent_pane).find(lprefix_id + "_sales_formula").val();
                     json_data.product.unit_id = $(lparent_pane).find(lprefix_id + "_unit").select2('val');
+                    json_data.product.unit_sales_id = $(lparent_pane).find(lprefix_id + "_unit_sales").select2('val');
                     json_data.product.purchase_amount = APP_CONVERTER._float($(lparent_pane).find(lprefix_id + "_purchase_amount").val());
                     json_data.product.product_status = $(lparent_pane).find(lprefix_id + "_product_status").select2('val');
                     json_data.product.notes = $(lparent_pane).find(lprefix_id + "_notes").val();
@@ -170,16 +172,7 @@
             
             $(lparent_pane).find(lprefix_id+'_sales_amount').val(APP_CONVERTER.thousand_separator(lsales_amount));
         },
-        unit_list_set:function(){
-            var lparent_pane = product_parent_pane;
-            var lprefix_id = product_component_prefix_id;
-            var lajax_url = product_data_support_url+'unit_list_get/';
-            var lresponse = APP_DATA_TRANSFER.ajaxPOST(lajax_url,{}).response;
-            var lis_unit = $(lparent_pane).find(lprefix_id+'_unit');
-            APP_COMPONENT.input_select.empty($(lis_unit));
-            $(lis_unit).select2({data:lresponse,placeholder:'Type something to search',allowClear:false});
-            product_data.unit_default = (lresponse.length>0)?lresponse[0]:{};
-        }
+        
     }
 
     var product_bind_event = function () {
@@ -201,7 +194,14 @@
             product_methods.sales_amount_set();
         });
         
-        product_methods.unit_list_set();
+        
+        $(lparent_pane).find(lprefix_id+'_unit').on('change',function(){
+            var lis_unit_sales = $(lparent_pane).find(lprefix_id+'_unit_sales');
+            var ldata = $(this).select2('data');
+            if(ldata !== null){
+                $(lis_unit_sales).select2('data',ldata);
+            }
+        });
     }
 
     var product_components_prepare = function () {
@@ -232,6 +232,9 @@
                         
                         $(lparent_pane).find(lprefix_id + '_unit')
                                 .select2('data', lproduct.unit);
+                        
+                        $(lparent_pane).find(lprefix_id + '_unit_sales')
+                                .select2('data', lproduct.unit_sales);
                         
                         $(lparent_pane).find(lprefix_id + '_product_category')
                                 .select2('data', lproduct.product_category);

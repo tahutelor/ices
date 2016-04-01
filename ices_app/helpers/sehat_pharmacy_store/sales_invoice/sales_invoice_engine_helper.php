@@ -169,6 +169,7 @@ class Sales_Invoice_Engine {
                             $product_type = Tools::_str($row['product_type']);
                             $product_id = Tools::_str($row['product_id']);
                             $unit_id = Tools::_str($row['unit_id']);
+                            $unit_id_sales = Tools::_str(isset($row['unit_id_sales'])?$row['unit_id_sales']:'');
                             $qty = Tools::_float(isset($row['qty'])?$row['qty']:'');
                             $stock_qty = Tools::_float('0');
                             $amount = Tools::_float('0');
@@ -177,8 +178,9 @@ class Sales_Invoice_Engine {
                             
                             foreach($product_list as $idx2=>$row2){
                                 if($product_type ===$row2['product_type']
-                                    &&$row2['product_id'] === $product_id
-                                    &&$row2['unit_id'] === $unit_id
+                                    && $row2['product_id'] === $product_id
+                                    && $row2['unit_id'] === $unit_id
+                                    && $row2['unit_id_sales'] === $unit_id_sales
                                 ){
                                     $amount = $row2['sales_amount'];
                                     $stock_qty = $row2['qty'];
@@ -188,18 +190,22 @@ class Sales_Invoice_Engine {
                             
                             $total_amount+=Tools::_float($amount) * Tools::_float($qty);
                             
-                            if(Tools::_float($qty)> Tools::_float($stock_qty)){
-                                $local_success = 0;
-                                $msg[] = Lang::get('Qty')
-                                    .' '.Lang::get('invalid',true,false);
+                            if($product_exists){
+                                if(Tools::_float($qty)> Tools::_float($stock_qty)){
+                                    $local_success = 0;
+                                    $msg[] = Lang::get('Qty')
+                                        .' '.Lang::get('invalid',true,false);
+                                }
+
+                                if(Tools::_float($amount)<=Tools::_float('0')){
+                                    $local_success = 0;
+                                    $msg[] = Lang::get('Amount')
+                                        .' '.Tools::thousand_separator('0')
+                                    ;
+                                }
                             }
                             
-                            if(Tools::_float($amount)<=Tools::_float('0')){
-                                $local_success = 0;
-                                $msg[] = Lang::get('Amount')
-                                    .' '.Lang::thousand_separator('0')
-                                ;
-                            }
+                            
                             
                             foreach($si_product as $idx2=>$row2){
                                 if($product_id === $row2['product_id']
@@ -299,6 +305,7 @@ class Sales_Invoice_Engine {
                 $msg[] = 'Invalid Method';
                 break;
         }
+        
         $result['success'] = $success;
         $result['msg'] = $msg;
 
@@ -353,7 +360,8 @@ class Sales_Invoice_Engine {
                     foreach($product_list as $idx2=>$row2){
                         if($row['product_type'] === $row2['product_type']
                             && $row['product_id'] === $row2['product_id']
-                            && $row['unit_id'] === $row2['unit_id']                                
+                            && $row['unit_id'] === $row2['unit_id']
+                            && $row['unit_id_sales'] === $row2['unit_id_sales']
                         ){
                             $product = $row2;
                         }
@@ -370,6 +378,8 @@ class Sales_Invoice_Engine {
                         'outstanding_movement_qty'=>'0',
                         'amount'=>$amount,
                         'subtotal_amount'=>$subtotal_amount,
+                        'unit_id_sales'=>$row['unit_id_sales'],
+                        'constant_sales'=>$product['constant_sales']
                     );
                 }
                 

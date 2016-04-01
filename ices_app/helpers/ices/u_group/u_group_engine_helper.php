@@ -213,6 +213,7 @@ class U_Group_Engine {
                     
                 ';
                 $rs = $db->query_array($q);
+                
                 if($rs[0]['total_sc'] != count($controller)){
                     $success = 0;
                     $msg[] = 'Invalid Security Controller';

@@ -194,15 +194,19 @@ section.content{
 }
 
 .table td>span{
-    //white-space:nowrap;
-    //margin-left:5px;
-    //margin-right:5px;
+    /*
+    white-space:nowrap;
+    margin-left:5px;
+    margin-right:5px;
+    */
 }
 
 .table td>div{
-    //white-space:nowrap;
-    //margin-left:5px;
-    //margin-right:5px;
+    /*
+    white-space:nowrap;
+    margin-left:5px;
+    margin-right:5px;
+    */
 }
 
 .modal{

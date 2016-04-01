@@ -107,6 +107,9 @@
             };
             return lresult;
         },
+        after_submit:function(){
+            window.location.href = u_profile_view_url;
+        }
     };
     
     var u_profile_bind_event = function(){
@@ -117,7 +120,7 @@
         APP_COMPONENT.button.submit.set($(lparent_pane).find(lprefix_id+'_btn_submit'),{
             parent_pane:lparent_pane,
             module_method:u_profile_methods,
-            view_url: u_profile_view_url+'index/',
+            view_url: '',
             prefix_id:lprefix_id,
             window_scroll:u_profile_window_scroll,
         });

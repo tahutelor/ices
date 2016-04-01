@@ -147,11 +147,15 @@ class Sales_Invoice_Print {
                     $p_engine->normal();
                 }
 
-
+                $constant_sales = $sip_row['constant_sales'];
+                
                 $p_engine->Cell($tbl_col_width['row_num'],$curr_line_height,$row_num,1,0,'L');
-                $p_engine->Cell($tbl_col_width['product'],$curr_line_height,$sip_row['product_name'],1,0,'L');
-                $p_engine->Cell($tbl_col_width['qty'],$curr_line_height,Tools::thousand_separator($sip_row['qty'],0),1,0,'R');
-                $p_engine->Cell($tbl_col_width['amount'],$curr_line_height,Tools::thousand_separator($sip_row['amount'],0),1,0,'R');
+                $product_text = $sip_row['product_name'].' - '.$sip_row['unit_code_sales'];
+                $p_engine->Cell($tbl_col_width['product'],$curr_line_height,$product_text,1,0,'L');
+                $qty = Tools::_float($sip_row['qty']) * Tools::_float($constant_sales);
+                $p_engine->Cell($tbl_col_width['qty'],$curr_line_height,Tools::thousand_separator($qty,0),1,0,'R');
+                $amount = Tools::_float($sip_row['amount']) / Tools::_float($constant_sales);
+                $p_engine->Cell($tbl_col_width['amount'],$curr_line_height,Tools::thousand_separator($amount,0),1,0,'R');
                 $p_engine->Cell($tbl_col_width['subtotal'],$curr_line_height,Tools::thousand_separator($sip_row['subtotal_amount'],0),1,0,'R');
 
                 $p_engine->Ln();

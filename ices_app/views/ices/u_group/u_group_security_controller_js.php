@@ -108,17 +108,11 @@
             
             ajax_url +=lajax_method+'/';
             
-            result = APP_DATA_TRANSFER.submit(ajax_url,json_data);
-            if(result.success ===1){
-                $(security_controller_parent_pane).find(lprefix_id+'_id').val(result.trans_id);
-                if(security_controller_view_url !==''){
-                    var url = security_controller_view_url+result.trans_id;
-                    window.location.href=url;
-                }
-                else{
-                    security_controller_after_submit();
-                }
-            }
+            var lresult = {
+                json_data:json_data,
+                ajax_url:ajax_url,
+            };
+            return lresult;
         },
         
     }
@@ -129,8 +123,10 @@
         
         $(lparent_pane).find(lprefix_id+'_btn_submit').off('click');
         APP_COMPONENT.button.submit.set($(lparent_pane).find(lprefix_id+'_btn_submit'),{
-            parent_pane:lparent_pane,
-            module_method:security_controller_methods,
+            parent_pane: lparent_pane,
+            module_method: security_controller_methods,
+            view_url: security_controller_view_url,
+            prefix_id:lprefix_id,
             window_scroll:security_controller_window_scroll,
         });
         

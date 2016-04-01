@@ -55,9 +55,7 @@
             
             if(APP_CONVERTER._float($(lc.amount).find('div')[0].innerHTML) < APP_CONVERTER._float(0)){
                 success = 0;
-            }
-            
-                        
+            }           
             
             lresult.success = success;
             return lresult;
@@ -72,19 +70,27 @@
             var ltbody = $(lparent_pane).find(lprefix_id + '_tbl_si_product tbody')[0];
             $.each($(ltbody).find('tr'), function(lidx, lrow) {
                 var lproduct_id = $(lrow).find('[col_name="product_id"] div')[0].innerHTML;
+                var lconstant_sales = $(lrow).find('[col_name="constant_sales"] div')[0].innerHTML;
                 
                 if(lproduct_id !== ''){
                     var ltemp = {
                         product_type: $(lrow).find('[col_name="product_type"] div')[0].innerHTML,
                         product_id:lproduct_id,
-                        unit_id: $(lrow).find('[col_name="unit_id"] div')[0].innerHTML
+                        unit_id: $(lrow).find('[col_name="unit_id"] div')[0].innerHTML,
+                        unit_id_sales: $(lrow).find('[col_name="unit_id_sales"] div')[0].innerHTML
                     };
                     
                     if(lidx !== ($(ltbody).find('tr').length - 1)){
-                        ltemp.qty = APP_CONVERTER._float($(lrow).find('[col_name="qty"] div')[0].innerHTML);
+                        var lqty = APP_CONVERTER._float($(lrow).find('[col_name="qty"] div')[0].innerHTML)
+                            /  APP_CONVERTER._float(lconstant_sales)
+                        ;
+                        ltemp.qty = lqty;
                     }
                     else{
-                        ltemp.qty = APP_CONVERTER._float($(lrow).find('[col_name="qty"] input').val());
+                        var lqty = APP_CONVERTER._float($(lrow).find('[col_name="qty"] input').val())
+                            /  APP_CONVERTER._float(lconstant_sales)
+                        ;
+                        ltemp.qty = lqty;
                     }
                     
                     if(APP_CONVERTER._float(ltemp.qty) > APP_CONVERTER._float('0')){
@@ -164,11 +170,21 @@
                     $(lc.stock_qty).find('div').removeClass('text-red');
                     $(lc.stock_qty).find('div')[0].innerHTML = '0.00';
                     $(lc.amount).find('div').removeClass('text-red');
+                    $(lc.constant_sales).find('div')[0].innerHTML = '0';
                 
                     if($(this).select2('val')!== ''){
                         var ldata = $(this).select2('data');
+                        var lconstant_sales = ldata.unit[0].unit_sales[0].constant_sales;
+                        $(lc.constant_sales).find('div')[0].innerHTML = lconstant_sales;
                         
-                        APP_COMPONENT.input.numeric($(lc.qty).find('input'),{min_val:0,max_val:ldata.unit[0].qty,reset:true});
+                        var lstock_qty = APP_CONVERTER._float(ldata.unit[0].qty) * APP_CONVERTER._float($(lc.constant_sales).find('div')[0].innerHTML);
+                        var lamount  = APP_CONVERTER._float(ldata.unit[0].sales_amount) / APP_CONVERTER._float($(lc.constant_sales).find('div')[0].innerHTML);
+                        
+                        APP_COMPONENT.input.numeric($(lc.qty).find('input'),{
+                            min_val:0,
+                            max_val:lstock_qty,
+                            reset:true
+                        });
                         $(lc.qty).find('input').on('blur',function(){
                             lqty_event_on_blur();
                         });
@@ -178,13 +194,15 @@
                         $(lc.product_id).find('div')[0].innerHTML = ldata.id;
                         $(lc.unit_id).find('div')[0].innerHTML = ldata.unit[0].id;
                         $(lc.unit).find('div')[0].innerHTML = ldata.unit[0].text;
+                        $(lc.unit_id_sales).find('div')[0].innerHTML = ldata.unit[0].unit_sales[0].id;
+                        $(lc.unit_sales).find('div')[0].innerHTML = ldata.unit[0].unit_sales[0].text;
                         
-                        $(lc.stock_qty).find('div')[0].innerHTML = APP_CONVERTER.thousand_separator(ldata.unit[0].qty);
-                        if(APP_CONVERTER._float(ldata.unit[0].qty) <= APP_CONVERTER._float(0)){
+                        $(lc.stock_qty).find('div')[0].innerHTML = APP_CONVERTER.thousand_separator(lstock_qty);
+                        if(APP_CONVERTER._float(lstock_qty) <= APP_CONVERTER._float(0)){
                             $(lc.stock_qty).find('div').addClass('text-red');
                         }
                         
-                        $(lc.amount).find('div')[0].innerHTML = APP_CONVERTER.thousand_separator(ldata.unit[0].sales_amount);
+                        $(lc.amount).find('div')[0].innerHTML = APP_CONVERTER.thousand_separator(lamount);
                         if(APP_CONVERTER._float(eval(ldata.unit[0].sales_amount)) <= APP_CONVERTER._float(0)){
                             $(lc.amount).find('div').addClass('text-red');
                         }
@@ -245,11 +263,17 @@
             }
             
             if (Object.keys(ldata_row).length > 0) {
+                var lconstant_sales = ldata_row.constant_sales;
+                
                 $(lc.product_type)[0].innerHTML = '<div>'+ldata_row.product_type+'</div>';
                 $(lc.product)[0].innerHTML = '<div>'+ldata_row.product_text+'</div>';
-                $(lc.qty)[0].innerHTML = '<div>'+APP_CONVERTER.thousand_separator(ldata_row.qty)+'</div>';
+                var lqty = APP_CONVERTER._float(ldata_row.qty) * APP_CONVERTER._float(ldata_row.constant_sales);
+                $(lc.qty)[0].innerHTML = '<div>'+APP_CONVERTER.thousand_separator(lqty)+'</div>';
                 $(lc.unit)[0].innerHTML = '<div>'+ldata_row.unit_text+'</div>';
-                $(lc.amount)[0].innerHTML = '<div>'+APP_CONVERTER.thousand_separator(ldata_row.amount)+'</div>';
+                $(lc.unit_sales)[0].innerHTML = '<div>'+ldata_row.unit_text_sales+'</div>';
+                $(lc.constant_sales)[0].innerHTML = '<div>'+ldata_row.constant_sales+'</div>';
+                var lamount = APP_CONVERTER._float(ldata_row.amount) / APP_CONVERTER._float(ldata_row.constant_sales);
+                $(lc.amount)[0].innerHTML = '<div>'+APP_CONVERTER.thousand_separator(lamount)+'</div>';
                 $(lc.subtotal_amount)[0].innerHTML = '<div>'+APP_CONVERTER.thousand_separator(ldata_row.subtotal_amount)+'</div>';
                 $(lrow).find('[col_name="action"]')[0].innerHTML = '';
             }

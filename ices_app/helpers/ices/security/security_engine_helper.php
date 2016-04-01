@@ -125,13 +125,16 @@ class Security_Engine{
         $uncalculated_uri = array(
             'app_message'
             ,'common_ajax_listener'
-            ,'app_notificaation'
+            ,'notification'
         );
         $calculate = true;
 
         foreach($uncalculated_uri as $uncalculated){
             if(strpos($uri,$uncalculated)!==false) $calculate = false;
         }
+        
+        
+        
         if($calculate){
             get_instance()->session->set_userdata(array("last_request"=>Date('Y-m-d H:i:s')));
         }

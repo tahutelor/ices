@@ -79,6 +79,7 @@ class Product_Engine {
         get_instance()->load->helper($path->product_data_support);
         
         SI::module()->load_class(array('module'=>'unit','class_name'=>'unit_data_support'));
+        SI::module()->load_class(array('module'=>'product_unit_conversion','class_name'=>'product_unit_conversion_data_support'));
         SI::module()->load_class(array('module'=>'product_category','class_name'=>'product_category_data_support'));
                 
         $result = SI::result_format_get();
@@ -103,6 +104,7 @@ class Product_Engine {
                     && isset($product['barcode'])
                     && isset($product['sales_formula'])
                     && isset($product['unit_id'])
+                    && isset($product['unit_sales_id'])
                     && isset($product['product_status'])
                     && isset($product['product_category_id'])
                     && isset($product['purchase_amount'])
@@ -118,12 +120,14 @@ class Product_Engine {
                     $product_category_id = Tools::empty_to_null(Tools::_str($product['product_category_id']));
                     $sales_formula = Tools::empty_to_null(Tools::_str($product['sales_formula']));
                     $unit_id = Tools::empty_to_null(Tools::_str($product['unit_id']));
+                    $unit_sales_id = Tools::empty_to_null(Tools::_str($product['unit_sales_id']));
                     $purchase_amount = Tools::_float($product['purchase_amount']);
                     
                     //<editor-fold defaultstate="collapsed" desc="Major Validation">
                     if (is_null($product_name) 
                         || is_null($product_category_id) 
                         || is_null($unit_id)
+                        || is_null($unit_sales_id)
                     ) {
                         $success = 0;
                         $msg[] = Lang::get('Name')
@@ -218,7 +222,25 @@ class Product_Engine {
                         //</editor-fold>
                     }
                     
-                    if (in_array($method, array(self::$prefix_method . '_active', self::$prefix_method . '_inactive'))) {
+                    if($unit_id !== $unit_sales_id){
+                        //<editor-fold defaultstate="collapsed">
+                        $puc_exists = FALSE;
+                        $t_puc_list = Product_Unit_Conversion_Data_Support::product_unit_conversion_get_by_product_id($product_id);
+                        if(count($t_puc_list)>0){
+                            foreach($t_puc_list['product_unit_conversion'] as $idx=>$row){
+                                if($row['unit_id'] === $unit_sales_id) $puc_exists = TRUE;
+                            }
+                        }
+                        if($puc_exists === FALSE){
+                            $success = 0;
+                            $msg[] = Lang::get('Sales Unit')
+                                .' '.Lang::get('invalid',true,false)
+                            ;
+                        }
+                        //</editor-fold>
+                    }   
+                    
+                    else if (in_array($method, array(self::$prefix_method . '_active', self::$prefix_method . '_inactive'))) {
                         //<editor-fold defaultstate="collapsed">
                         if (!count($product_db) > 0) {
                             $success = 0;
@@ -312,7 +334,12 @@ class Product_Engine {
                     )),
                 );
                 
+                $p_u_sales = array(
+                    'unit_id'=>Tools::_str($product_data['unit_sales_id']),
+                );
+                
                 $result['p_u'] = $p_u;
+                $result['p_u_sales'] = $p_u_sales;
                 $result['product'] = $product;
 
                 //</editor-fold>
@@ -337,6 +364,7 @@ class Product_Engine {
 
         $fproduct = $final_data['product'];
         $fp_u = $final_data['p_u'];
+        $fp_u_sales = $final_data['p_u_sales'];
         
         $modid = User_Info::get()['user_id'];
         $moddate = Date('Y-m-d H:i:s');
@@ -374,6 +402,15 @@ class Product_Engine {
             }
         }
         
+        if($success === 1){
+            $fp_u_sales['product_id'] = $product_id;
+            if (!$db->insert('p_u_sales', $fp_u_sales)) {
+                $msg[] = $db->_error_message();
+                $db->trans_rollback();
+                $success = 0;
+            }
+        }
+        
         $result['success'] = $success;
         $result['msg'] = $msg;
         return $result;
@@ -390,6 +427,7 @@ class Product_Engine {
 
         $fproduct = $final_data['product'];
         $fp_u = $final_data['p_u'];
+        $fp_u_sales = $final_data['p_u_sales'];
 
 
         $modid = User_Info::get()['user_id'];
@@ -421,6 +459,23 @@ class Product_Engine {
         if($success === 1){
             $fp_u['product_id'] = $product_id;
             if (!$db->insert('p_u', $fp_u)) {
+                $msg[] = $db->_error_message();
+                $db->trans_rollback();
+                $success = 0;
+            }
+        }
+        
+        if($success === 1){
+            if (!$db->query('delete from p_u_sales where product_id = ' . $db->escape($product_id))) {
+                $msg[] = $db->_error_message();
+                $db->trans_rollback();
+                $success = 0;
+            }
+        }
+        
+        if($success === 1){
+            $fp_u_sales['product_id'] = $product_id;
+            if (!$db->insert('p_u_sales', $fp_u_sales)) {
                 $msg[] = $db->_error_message();
                 $db->trans_rollback();
                 $success = 0;

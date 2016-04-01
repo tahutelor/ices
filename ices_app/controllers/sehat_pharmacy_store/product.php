@@ -113,6 +113,12 @@ class Product extends MY_ICES_Controller {
                         , array("id" => '#product_batch_tab', "value" => "Product Batch"));
                 $product_batch_pane = $history_tab->div_add()->div_set('id', 'product_batch_tab')->div_set('class', 'tab-pane');
                 Product_Renderer::product_batch_render($app, $product_batch_pane, array("id" => $id), $this->path);
+                
+                $product_unit_conversion_tab = $nav_tab->nav_tab_set('items_add'
+                        , array("id" => '#product_unit_conversion_tab', "value" => "Product Unit Conversion"));
+                $product_unit_conversion_pane = $history_tab->div_add()->div_set('id', 'product_unit_conversion_tab')->div_set('class', 'tab-pane');
+                Product_Renderer::product_unit_conversion_render($app, $product_unit_conversion_pane, array("id" => $id), $this->path);
+            
             }
 
             $app->render();
@@ -268,6 +274,12 @@ class Product extends MY_ICES_Controller {
                         'text' => Tools::html_tag('strong', $product['unit_code'])
                         . ' ' . $product['unit_name']
                     );
+                    
+                    $product['unit_sales'] = array(
+                        'id' => $product['unit_sales_id'],
+                        'text' => Tools::html_tag('strong', $product['unit_sales_code'])
+                        . ' ' . $product['unit_sales_name']
+                    );
 
                     $next_allowed_status_list = SI::form_data()
                             ->status_next_allowed_status_list_get('product_engine', $product['product_status']['id']
@@ -278,18 +290,7 @@ class Product extends MY_ICES_Controller {
                 }
                 //</editor-fold>
                 break;
-            case 'unit_list_get':
-                //<editor-fold defaultstate="collapsed">
-                $t_unit = Product_Data_Support::unit_list_get();
-                foreach ($t_unit as $idx => $row) {
-                    $t_unit[$idx] = array(
-                        'id' => $row['id'],
-                        'text' => Tools::html_tag('strong', $row['code']) . ' ' . $row['name']
-                    );
-                }
-                $response = $t_unit;
-                //</editor-fold>
-                break;
+            
         }
         $result['success'] = $success;
         $result['msg'] = $msg;

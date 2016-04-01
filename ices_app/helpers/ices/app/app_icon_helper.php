@@ -237,6 +237,11 @@ class App_Icon {
     public static function print_form(){
         return 'fa fa-printer';
     }
+    
+    public static function sys_backup(){
+        return 'fa fa-cogs';
+    }
+    
     public static function html_get($app_icon) {
         $result = '';
         if (is_array($app_icon)) {

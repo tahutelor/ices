@@ -104,22 +104,16 @@
                     json_data.security_app_access_time.push({id:$(lrow).attr('id').replace(/[security_app_access_time]/g,'')});
                 }
             });
-            console.log(json_data);
+            
             var lajax_method='security_app_access_time_save';
             
             ajax_url +=lajax_method+'/';
             
-            result = APP_DATA_TRANSFER.submit(ajax_url,json_data);
-            if(result.success ===1){
-                $(security_app_access_time_parent_pane).find(lprefix_id+'_id').val(result.trans_id);
-                if(security_app_access_time_view_url !==''){
-                    var url = security_app_access_time_view_url+result.trans_id;
-                    window.location.href=url;
-                }
-                else{
-                    security_app_access_time_after_submit();
-                }
-            }
+            var lresult = {
+                json_data:json_data,
+                ajax_url:ajax_url,
+            };
+            return lresult;
         },
     }
 
@@ -129,8 +123,10 @@
         
         $(lparent_pane).find(lprefix_id+'_btn_submit').off('click');
         APP_COMPONENT.button.submit.set($(lparent_pane).find(lprefix_id+'_btn_submit'),{
-            parent_pane:lparent_pane,
-            module_method:security_app_access_time_methods,
+            parent_pane: lparent_pane,
+            module_method: security_app_access_time_methods,
+            view_url: security_app_access_time_view_url,
+            prefix_id:lprefix_id,
             window_scroll:security_app_access_time_window_scroll,
         });
         

@@ -2,11 +2,11 @@
 
 // private
 $config['MY_']['controller_time_limit'] = 10;
-$config['MY_']['minify_js'] = true;
+$config['MY_']['minify_js'] = false;
 $config['MY_']['pack_js'] = true;
 $config['MY_']['pack_js_media'] = 'file'; //supposed to be file or db
-$config['MY_']['limit_connection'] = 0;
-$config['MY_']['timeout'] = 90000;
+$config['MY_']['limit_connection'] = 0; //total request limit per minute
+$config['MY_']['timeout'] = 900; //seconds
 $config['MY_']['disable_console'] = true;
 
 $config['MY_Job']['controller_time_limit'] = 10;

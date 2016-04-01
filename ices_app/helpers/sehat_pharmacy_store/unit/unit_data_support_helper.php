@@ -42,6 +42,20 @@ class Unit_Data_Support {
         //</editor-fold>
     }
 
+    public static function input_select_unit_list_get($param = array()) {
+        //<editor-fold defaultstate="collapsed">
+        $result = array();
+        $t_unit_list  = self::unit_list_get();
+        foreach($t_unit_list as $idx=>$row){
+            $result[] = array(
+                'id'=>$row['id'],
+                'text'=>'<strong>'.$row['code'].'</strong>'.' '.$row['name'],
+            );
+        }
+        return $result;
+        //</editor-fold>
+    }
+    
 }
 
 ?>

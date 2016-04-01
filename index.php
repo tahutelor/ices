@@ -1,4 +1,5 @@
 <?php
+    ob_start();// Added by Edwin 2016-01-21 to help fatal error catch
     date_default_timezone_set('Asia/Jakarta');
 /*
  *---------------------------------------------------------------
@@ -33,7 +34,7 @@ if (defined('ENVIRONMENT'))
 	switch (ENVIRONMENT)
 	{
 		case 'development':
-			error_reporting(E_ALL);
+			error_reporting(E_ALL & ~E_DEPRECATED);
 		break;
 	
 		case 'testing':

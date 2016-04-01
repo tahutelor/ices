@@ -404,11 +404,44 @@ class Tools{
         //</editor-fold>
     }
     
-    public function urldecode($istr){
+    public static function urldecode($istr){
         $result = null;
         $result = urldecode($istr);
         $result = preg_replace('/zyz/','/',$result);
         return $result;
+    }
+    
+    public static function get_dir_contents($dir, &$results = array()){
+        $files = scandir($dir);
+
+        foreach($files as $key => $value){
+            $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+            if(!is_dir($path)) {
+                $results[] = $path;
+            } else if($value != "." && $value != "..") {
+                self::get_dir_contents($path, $results);
+                $results[] = $path;
+            }
+        }
+
+        return $results;
+    }
+    
+    public static function clean_dir($dir,$level = 0) {
+        if (is_dir($dir)) {
+          $objects = scandir($dir);
+          foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+              if (filetype($dir."/".$object) == "dir") 
+                 self::clean_dir($dir."/".$object,1); 
+              else unlink($dir."/".$object);
+            }
+          }
+          reset($objects);
+          if($level !== 0){
+            rmdir($dir);
+          }
+        }
     }
     
 }

@@ -34,16 +34,16 @@ class Company extends MY_ICES_Controller {
                 ->button_set('icon', 'fa fa-plus')->button_set('href', ICES_Engine::$app['app_base_url'] . 'company/add');
 
         $cols = array(
-            array("name" => "code", "label" => "Code", "data_type" => "text",'is_key'=>true),
+            array("name" => "code", "label" => "Code", "data_type" => "text", 'is_key' => true),
             array("name" => "name", "label" => "Name", "data_type" => "text"),
             array("name" => "company_status", "label" => "Status", "data_type" => "text")
         );
 
         $tbl = $form->table_ajax_add();
         $tbl->table_ajax_set('id', 'ajax_table')
-            ->table_ajax_set('base_href', $this->path->index . 'view')
-            ->table_ajax_set('lookup_url', $this->path->index . 'ajax_search/company')
-            ->table_ajax_set('columns', $cols);
+                ->table_ajax_set('base_href', $this->path->index . 'view')
+                ->table_ajax_set('lookup_url', $this->path->index . 'ajax_search/company')
+                ->table_ajax_set('columns', $cols);
         $app->render();
         //</editor-fold>
     }
@@ -157,6 +157,7 @@ class Company extends MY_ICES_Controller {
                         'where' => '
                             and (
                                 t1.company_status like ' . $lookup_str . '
+                                or t1.name like ' . $lookup_str . '
                             )
                         ',
                         'group' => '
@@ -196,15 +197,15 @@ class Company extends MY_ICES_Controller {
                 //<editor-fold defaultstate="collapsed">
                 $db = new DB();
                 $response = array();
-                $company_id = Tools::_str(isset($data['data'])? $data['data']:'');
+                $company_id = Tools::_str(isset($data['data']) ? $data['data'] : '');
                 $temp = Company_Data_Support::company_get($company_id);
                 if (count($temp) > 0) {
                     $company = $temp['company'];
                     $company['company_status'] = array(
-                        'id'=>$company['company_status'],
-                        'text'=>SI::get_status_attr(
-                                    SI::type_get('company_engine', $company['company_status'], '$status_list'
-                                    )['text']
+                        'id' => $company['company_status'],
+                        'text' => SI::get_status_attr(
+                                SI::type_get('company_engine', $company['company_status'], '$status_list'
+                                )['text']
                         )
                     );
 

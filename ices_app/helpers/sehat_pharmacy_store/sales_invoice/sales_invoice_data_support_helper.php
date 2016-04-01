@@ -30,9 +30,13 @@ class Sales_Invoice_Data_Support {
                     ,p.name product_name
                     ,u.code unit_code
                     ,u.name unit_name
+                    ,u_sales.code unit_code_sales
+                    ,u_sales.name unit_name_sales
+                    
                 from si_product sip
                 inner join product p on sip.product_id = p.id
                 inner join unit u on sip.unit_id = u.id
+                inner join unit u_sales on sip.unit_id_sales = u_sales.id
                 
                 where sip.sales_invoice_id = ' . $db->escape($sales_invoice['id']) . '
             ';

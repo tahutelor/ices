@@ -121,14 +121,14 @@ class Contact_Data_Support {
         //</editor-fold>
     }
     
-    public static function company_get() {
+    public static function company_search($lookup_str) {
         //<editor-fold defaultstate="collapsed">
         $result = array();
         get_instance()->load->helper(ICES_Engine::$app['app_base_dir'] . 'company/company_engine');
         $path = Company_Engine::path_get();
 
         get_instance()->load->helper($path->company_data_support);
-        $t_company = Company_Data_Support::company_list_get(array('company_status'=>'active'));
+        $t_company = Company_Data_Support::company_search(array('lookup_str'=>$lookup_str,'company_status'=>'active'));
         $result = $t_company;
         return $result;
         //</editor-fold>

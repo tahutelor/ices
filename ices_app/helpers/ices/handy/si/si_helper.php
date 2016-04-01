@@ -103,6 +103,9 @@ class SI{
             case 'CANCELED':
                 $result = '<span class="text-red"><strong>'.$data.'</strong></span>';
                 break;
+            case 'DELETED':
+                $result = '<span class="text-red"><strong>'.$data.'</strong></span>';
+                break;
             
             case 'NO':
                 $result = '<span class="text-red"><strong>'.$data.'</strong></span>';

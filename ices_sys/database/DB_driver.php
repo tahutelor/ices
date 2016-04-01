@@ -294,7 +294,7 @@ class CI_DB_driver {
 
 		// Start the Query Timer
 		$time_start = list($sm, $ss) = explode(' ', microtime());
-
+                
 		// Run the Query
 		if (FALSE === ($this->result_id = $this->simple_query($sql)))
 		{
@@ -332,7 +332,7 @@ class CI_DB_driver {
 
 			return FALSE;
 		}
-
+                
 		// Stop and aggregate the query time results
 		$time_end = list($em, $es) = explode(' ', microtime());
 		$this->benchmark += ($em + $es) - ($sm + $ss);
@@ -373,7 +373,7 @@ class CI_DB_driver {
 		$RES			= new $driver();
 		$RES->conn_id	= $this->conn_id;
 		$RES->result_id	= $this->result_id;
-
+                
 		if ($this->dbdriver == 'oci8')
 		{
 			$RES->stmt_id		= $this->stmt_id;
@@ -384,7 +384,7 @@ class CI_DB_driver {
 
 		// oci8 vars must be set before calling this
 		$RES->num_rows	= $RES->num_rows();
-
+                
 		// Is query caching enabled?  If so, we'll serialize the
 		// result object and save it to a cache file.
 		if ($this->cache_on == TRUE AND $this->_cache_init())

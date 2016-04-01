@@ -109,7 +109,6 @@ class Sales_Invoice extends MY_ICES_Controller {
                         , array("id" => '#mov_qty_log', "value" => "Product Mov. Qty"));
                 $pr_pane = $product_mov_qty_tab->div_add()->div_set('id', 'mov_qty_log')->div_set('class', 'tab-pane');
                 Sales_Invoice_Renderer::product_mov_qty_render($app, $pr_pane, array("id" => $id), $this->path);
-
                 
                 
                 $sales_receipt_tab = $nav_tab->nav_tab_set('items_add'
@@ -263,7 +262,9 @@ class Sales_Invoice extends MY_ICES_Controller {
                         $row->product_text = Tools::html_tag('strong', $row->product_code)
                                 . ' ' . $row->product_name;
                         $row->unit_text = Tools::html_tag('strong', $row->unit_code)
-                                . ' ' . $row->unit_name;
+                        ;
+                        $row->unit_text_sales = Tools::html_tag('strong', $row->unit_code_sales)
+                        ;
                     }
                     $si_product = json_decode(json_encode($si_product), true);
 
@@ -285,14 +286,6 @@ class Sales_Invoice extends MY_ICES_Controller {
                 //</editor-fold>
                 break;
 
-            case 'product_batch_qty_get':
-                //<editor-fold defaultstate="collapsed">
-                $product_type = Tools::_str(isset($data['product_type']) ? $data['product_type'] : '');
-                $param = array('product_type' => $product_type);
-                $response = Sales_Invoice_Data_Support::customer_product_type_get($param);
-                //</editor-fold>
-                break;
-           
         }
         $result['success'] = $success;
         $result['msg'] = $msg;

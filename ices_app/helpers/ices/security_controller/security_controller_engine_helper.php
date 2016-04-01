@@ -122,6 +122,7 @@ class Security_Controller_Engine {
                 
                 if(in_array($method,array(self::$prefix_method.'_active',self::$prefix_method.'_inactive'))){
                     //<editor-fold defaultstate="collapsed">
+                    
                     if(!count($security_controller_db)>0){
                         $success = 0;
                         $msg[] = 'Invalid Security Controller';
