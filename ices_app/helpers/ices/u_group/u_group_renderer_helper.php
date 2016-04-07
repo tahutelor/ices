@@ -1,55 +1,58 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class U_Group_Renderer {
 
-    public static function helper_init(){
+    public static function helper_init() {
         //<editor-fold defaultstate="collapsed">
-        get_instance()->load->helper(ICES_Engine::$app['app_base_dir'].'u_group/u_group_engine');
-        //</editor-fold>
-    }
-    
-    public static function modal_u_group_render($app,$modal){
-        //<editor-fold defaultstate="collapsed">
-        $modal->header_set(array('title'=>Lang::get('User Group'),'icon'=>'fa fa-cogs'));
-        $modal->width_set('95%');
-        self::u_group_components_render($app, $modal,true);
+        get_instance()->load->helper(ICES_Engine::$app['app_base_dir'] . 'u_group/u_group_engine');
         //</editor-fold>
     }
 
-    public static function u_group_render($app,$form,$data,$path,$method){
+    public static function modal_u_group_render($app, $modal) {
+        //<editor-fold defaultstate="collapsed">
+        $modal->header_set(array('title' => Lang::get('User Group'), 'icon' => 'fa fa-cogs'));
+        $modal->width_set('95%');
+        self::u_group_components_render($app, $modal, true);
+        //</editor-fold>
+    }
+
+    public static function u_group_render($app, $form, $data, $path, $method) {
         //<editor-fold defaultstate="collapsed">
         $path = U_Group_Engine::path_get();
-        
+
         $id_prefix = U_Group_Engine::$prefix_id;
-        
+
         $id = $data['id'];
-        self::u_group_components_render($app, $form,false);
+        self::u_group_components_render($app, $form, false);
         $back_href = $path->index;
 
-        $form->button_add()->button_set('value','BACK')
-            ->button_set('icon',App_Icon::btn_back())
-            ->button_set('href',$back_href)
-            ->button_set('class','btn btn-default')
+        $form->button_add()->button_set('value', 'BACK')
+                ->button_set('icon', App_Icon::btn_back())
+                ->button_set('href', $back_href)
+                ->button_set('class', 'btn btn-default')
         ;
 
         $js = '
             <script>
-                $("#'.$id_prefix.'_method").val("'.$method.'");
-                $("#'.$id_prefix.'_id").val("'.$id.'");
+                $("#' . $id_prefix . '_method").val("' . $method . '");
+                $("#' . $id_prefix . '_id").val("' . $id . '");
             </script>
-        ';             
+        ';
         $app->js_set($js);
 
         $js = '                
-                '.$id_prefix.'_init();
-                '.$id_prefix.'_bind_event();
-                '.$id_prefix.'_components_prepare(); 
+                ' . $id_prefix . '_init();
+                ' . $id_prefix . '_bind_event();
+                ' . $id_prefix . '_components_prepare(); 
         ';
         $app->js_set($js);
         //</editor-fold>
     }
 
-    public static function u_group_components_render($app,$form,$is_modal){
+    public static function u_group_components_render($app, $form, $is_modal) {
         // <editor-fold defaultstate="collapsed" desc="">
         $path = U_Group_Engine::path_get();
 
@@ -126,7 +129,7 @@ class U_Group_Renderer {
             , 'common_ajax_listener' => ICES_Engine::$app['app_base_url'] . 'common_ajax_listener/'
             , 'component_prefix_id' => $id_prefix
         );
-        
+
         if ($is_modal) {
             $param['detail_tab'] = '#modal_u_group .modal-body';
             $param['view_url'] = '';
@@ -137,10 +140,9 @@ class U_Group_Renderer {
         $app->js_set($js);
 
         // </editor-fold>
-    
     }
-    
-    public static function u_group_status_log_render($app,$form,$data,$path){
+
+    public static function u_group_status_log_render($app, $form, $data, $path) {
         // <editor-fold defaultstate="collapsed" desc="">
         $config = array(
             'module_name' => 'u_group',
@@ -150,14 +152,14 @@ class U_Group_Renderer {
         SI::form_renderer()->status_log_tab_render($form, $config); // </editor-fold>
     }
 
-    public static function security_menu_render($app,$form,$data,$path){
+    public static function security_menu_render($app, $form, $data, $path) {
         // <editor-fold defaultstate="collapsed" desc="">
         $path = U_Group_Engine::path_get();
 
         $db = new DB();
 
         $id_prefix = 'security_menu';
-        
+
         $form->input_add()->input_set('id', $id_prefix . '_app_name')
                 ->input_set('hide', true)
                 ->input_set('value', '')
@@ -167,11 +169,11 @@ class U_Group_Renderer {
                 ->input_set('hide', true)
                 ->input_set('value', '')
         ;
-        
+
         $form->table_add()
-                ->table_set('id', $id_prefix.'_table')
+                ->table_set('id', $id_prefix . '_table')
                 ->table_set('data', array())
-                ->table_set('columns', array("name" => "selected",'col_attrib' => array('style' => 'text-align:center;width:50px'), "attribute" => 'style="text-align:center;"',  "label" => '<input type="checkbox" id="check_all">', 'element_tag' => 'input', 'element_attribute' => 'type="checkbox"'))
+                ->table_set('columns', array("name" => "selected", 'col_attrib' => array('style' => 'text-align:center;width:50px'), "attribute" => 'style="text-align:center;"', "label" => '<input type="checkbox" id="check_all">', 'element_tag' => 'input', 'element_attribute' => 'type="checkbox"'))
                 ->table_set('columns', array("name" => "id", "label" => "Menu ID", 'attribute' => 'style="display:none"', 'col_attrib' => array('style' => "display:none")))
                 ->table_set('columns', array("name" => "menu", "label" => "Menu", 'col_attrib' => array('style' => 'text-align:left'), 'attribute' => 'style="text-align:left"'))
         ;
@@ -183,11 +185,11 @@ class U_Group_Renderer {
                 ->button_set('id', $id_prefix . '_btn_submit')
                 ->button_set('icon', App_Icon::detail_btn_save())
         ;
-                
+
         $param = array(
             'ajax_url' => $path->index . 'ajax_search/'
             , 'index_url' => $path->index
-            , 'detail_tab' => '#'.$id_prefix.'_tab'
+            , 'detail_tab' => '#' . $id_prefix . '_tab'
             , 'view_url' => $path->index . 'view/'
             , 'window_scroll' => 'body'
             , 'data_support_url' => $path->index . 'data_support/'
@@ -197,214 +199,214 @@ class U_Group_Renderer {
 
         $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'u_group/u_group_security_menu_js', $param, TRUE);
         $app->js_set($js);
-        
+
         $js = '
             <script>
-                $("#'.$id_prefix.'_tab").find("#'.$id_prefix.'_method").val("view");
+                $("#' . $id_prefix . '_tab").find("#' . $id_prefix . '_method").val("view");
             </script>
         ';
         $app->js_set($js);
-        
+
         $js = '                
-            '.$id_prefix.'_init();
-            '.$id_prefix.'_bind_event();
-            '.$id_prefix.'_components_prepare(); 
+            ' . $id_prefix . '_init();
+            ' . $id_prefix . '_bind_event();
+            ' . $id_prefix . '_components_prepare(); 
         ';
         $app->js_set($js);
-        
+
         //</editor-fold>
     }
-    
-    public static function security_controller_render($app, $form, $data, $path){
+
+    public static function security_controller_render($app, $form, $data, $path) {
         //<editor-fold defaultstate="collapsed">
-        $ices = SI::type_get('ICES_Engine','ices','$app_list');
-        get_instance()->load->helper($ices['app_base_dir'].'u_group/u_group_engine');
-        
+        $ices = SI::type_get('ICES_Engine', 'ices', '$app_list');
+        get_instance()->load->helper($ices['app_base_dir'] . 'u_group/u_group_engine');
+
         $u_group_path = U_Group_Engine::path_get();
         get_instance()->load->helper($u_group_path->u_group_data_support);
-        get_instance()->load->helper($ices['app_base_dir'].'security_controller/security_controller_engine');
-        
+        get_instance()->load->helper($ices['app_base_dir'] . 'security_controller/security_controller_engine');
+
         $security_controller_path = Security_Controller_Engine::path_get();
         get_instance()->load->helper($security_controller_path->security_controller_data_support);
-        
+
         $u_group_id = $data['id'];
         $u_group = U_Group_Data_Support::u_group_get($u_group_id);
         $u_group_security_controller = U_Group_Data_Support::u_group_security_controller_get($u_group_id);
         $security_controller_list = Security_Controller_Data_Support::security_controller_by_app_name_get($u_group['app_name']);
         $db = new DB();
-        
-        
+
+
         $id_prefix = 'security_controller';
-        $name='';
+        $name = '';
         $accordion = null;
         $form->form_group_add();
-        
+
         $form->input_add()->input_set('id', $id_prefix . '_method')
                 ->input_set('hide', true)
                 ->input_set('value', '')
         ;
-        
+
         $form_group = $form->form_group_add();
-        $form_group->label_add()->input_raw_add()->input_raw_set('type','checkbox')
-                ->input_raw_set('id',$id_prefix.'_check_all');
-        $form_group->label_add()->label_set('value','Check All');
-        foreach($security_controller_list as $controller){
-            if($name != $controller['name']){
+        $form_group->label_add()->input_raw_add()->input_raw_set('type', 'checkbox')
+                ->input_raw_set('id', $id_prefix . '_check_all');
+        $form_group->label_add()->label_set('value', 'Check All');
+        foreach ($security_controller_list as $controller) {
+            if ($name != $controller['name']) {
                 $name = $controller['name'];
-                $accordion = $form->accordion_add()->accordion_set('header',array('id'=>$name,'text'=>$name));
+                $accordion = $form->accordion_add()->accordion_set('header', array('id' => $name, 'text' => $name));
             }
-    
+
             $attrib = array();
-            foreach($u_group_security_controller as $item){
-                if($item['id'] == $controller['id'])
-                    $attrib=array(
-                        "checked"=>''
+            foreach ($u_group_security_controller as $item) {
+                if ($item['id'] == $controller['id'])
+                    $attrib = array(
+                        "checked" => ''
                     );
-            }             
-            $form_group=$accordion->form_group_add();
+            }
+            $form_group = $accordion->form_group_add();
             $form_group->label_add()
-                    ->input_raw_add()->input_raw_set('type','checkbox')
-                    ->input_raw_set('attrib',$attrib)
-                    ->input_raw_set('id',$id_prefix.$controller['id']);
-            $form_group->label_add()->label_set('value',$controller['method']);
+                    ->input_raw_add()->input_raw_set('type', 'checkbox')
+                    ->input_raw_set('attrib', $attrib)
+                    ->input_raw_set('id', $id_prefix . $controller['id']);
+            $form_group->label_add()->label_set('value', $controller['method']);
         }
 
-        $form->hr_add()->button_add()->button_set('value','Submit')
-            ->button_set('icon','fa fa-save')
-            ->button_set('id',$id_prefix.'_btn_submit');
-        
+        $form->hr_add()->button_add()->button_set('value', 'Submit')
+                ->button_set('icon', 'fa fa-save')
+                ->button_set('id', $id_prefix . '_btn_submit');
+
         $param = array(
             'ajax_url' => $u_group_path->index . 'ajax_search/'
             , 'index_url' => $u_group_path->index
-            , 'detail_tab' => '#'.$id_prefix.'_tab'
+            , 'detail_tab' => '#' . $id_prefix . '_tab'
             , 'view_url' => $u_group_path->index . 'view/'
             , 'window_scroll' => 'body'
             , 'data_support_url' => $u_group_path->index . 'data_support/'
             , 'common_ajax_listener' => ICES_Engine::$app['app_base_url'] . 'common_ajax_listener/'
             , 'component_prefix_id' => $id_prefix
         );
-        
+
         $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'u_group/u_group_security_controller_js', $param, TRUE);
         $app->js_set($js);
-        
+
         $js = '
             <script>
-                $("#'.$id_prefix.'_tab").find("#'.$id_prefix.'_method").val("view");
+                $("#' . $id_prefix . '_tab").find("#' . $id_prefix . '_method").val("view");
             </script>
         ';
         $app->js_set($js);
-        
+
         $js = '                
-            '.$id_prefix.'_init();
-            '.$id_prefix.'_bind_event();
-            '.$id_prefix.'_components_prepare(); 
+            ' . $id_prefix . '_init();
+            ' . $id_prefix . '_bind_event();
+            ' . $id_prefix . '_components_prepare(); 
         ';
         $app->js_set($js);
-        
+
         //</editor-fold>
     }
-    
-    public static function security_app_access_time_tab_render($app, $form, $data, $path){
+
+    public static function security_app_access_time_tab_render($app, $form, $data, $path) {
         //<editor-fold defaultstate="collapsed">
-        $ices = SI::type_get('ICES_Engine','ices','$app_list');
-        get_instance()->load->helper($ices['app_base_dir'].'u_group/u_group_engine');
-        
+        $ices = SI::type_get('ICES_Engine', 'ices', '$app_list');
+        get_instance()->load->helper($ices['app_base_dir'] . 'u_group/u_group_engine');
+
         $u_group_path = U_Group_Engine::path_get();
         get_instance()->load->helper($u_group_path->u_group_data_support);
-        get_instance()->load->helper($ices['app_base_dir'].'security_controller/security_controller_engine');
-        
+        get_instance()->load->helper($ices['app_base_dir'] . 'security_controller/security_controller_engine');
+
         $db = new DB();
         $app_name = ICES_Engine::$app['val'];
         $q = '
             select distinct saat.id,day,hour_start,min_start,hour_end, min_end
             from security_app_access_time saat
                 inner join u_group ug on saat.app_name = ug.app_name
-            where ug.id = '.$db->escape($data['id']).'
+            where ug.id = ' . $db->escape($data['id']) . '
                 and saat.status > 0
             order by day,hour_start,min_start
         ';
-        $app_access_time_item=$db->query_array_obj($q);
-        
+        $app_access_time_item = $db->query_array_obj($q);
+
         $q = '
             select distinct t1.security_app_access_time_id id 
             from u_group_security_app_access_time t1
                 inner join security_app_access_time saat on t1.security_app_access_time_id = saat.id
-            where t1.u_group_id = '.$db->escape($data['id']).' 
+            where t1.u_group_id = ' . $db->escape($data['id']) . ' 
                 and saat.status > 0
         ';
         $user_app_access_time = $db->query_array_obj($q);
-        
-        $day='';
-        
+
+        $day = '';
+
         $id_prefix = 'security_app_access_time';
         $accordion = null;
         $form->form_group_add();
         $form_group = $form->form_group_add();
-        $form_group->label_add()->input_raw_add()->input_raw_set('type','checkbox')
-                ->input_raw_set('id',$id_prefix.'_check_all');
-        $form_group->label_add()->label_set('value','Check All');
-        foreach($app_access_time_item as $controller){
-            if($day != $controller->day){
+        $form_group->label_add()->input_raw_add()->input_raw_set('type', 'checkbox')
+                ->input_raw_set('id', $id_prefix . '_check_all');
+        $form_group->label_add()->label_set('value', 'Check All');
+        foreach ($app_access_time_item as $controller) {
+            if ($day != $controller->day) {
                 $day = $controller->day;
                 $accordion = $form->accordion_add()
-                    ->accordion_set('header',array('id'=>$day,'text'=>Tools::_date('2014-06-'.(Tools::_int($day)+1),'l')));
+                        ->accordion_set('header', array('id' => $day, 'text' => Tools::_date('2014-06-' . (Tools::_int($day) + 1), 'l')));
             }
-            
+
             $attrib = array();
-            foreach($user_app_access_time as $item){
-                if($item->id === $controller->id)
-                    $attrib=array(
-                        "checked"=>''
+            foreach ($user_app_access_time as $item) {
+                if ($item->id === $controller->id)
+                    $attrib = array(
+                        "checked" => ''
                     );
-            }             
-            $form_group=$accordion->form_group_add();
+            }
+            $form_group = $accordion->form_group_add();
             $form_group->label_add()
-                    ->input_raw_add()->input_raw_set('type','checkbox')
-                    ->input_raw_set('attrib',$attrib)
-                    ->input_raw_set('id',$id_prefix.$controller->id);
-            $form_group->label_add()->label_set('value',Tools::_date($controller->hour_start.':'.$controller->min_start,'H:i').' - '.Tools::_date($controller->hour_end.':'.$controller->min_end,'H:i'));
+                    ->input_raw_add()->input_raw_set('type', 'checkbox')
+                    ->input_raw_set('attrib', $attrib)
+                    ->input_raw_set('id', $id_prefix . $controller->id);
+            $form_group->label_add()->label_set('value', Tools::_date($controller->hour_start . ':' . $controller->min_start, 'H:i') . ' - ' . Tools::_date($controller->hour_end . ':' . $controller->min_end, 'H:i'));
         }
-        
-        
-        $form->hr_add()->button_add()->button_set('value','Submit')
-                ->button_set('icon','fa fa-save')
-                ->button_set('id',$id_prefix.'_btn_submit');
-          
-        
+
+
+        $form->hr_add()->button_add()->button_set('value', 'Submit')
+                ->button_set('icon', 'fa fa-save')
+                ->button_set('id', $id_prefix . '_btn_submit');
+
+
         $param = array(
             'ajax_url' => $u_group_path->index . 'ajax_search/'
             , 'index_url' => $u_group_path->index
-            , 'detail_tab' => '#'.$id_prefix.'_tab'
+            , 'detail_tab' => '#' . $id_prefix . '_tab'
             , 'view_url' => $u_group_path->index . 'view/'
             , 'window_scroll' => 'body'
             , 'data_support_url' => $u_group_path->index . 'data_support/'
             , 'common_ajax_listener' => ICES_Engine::$app['app_base_url'] . 'common_ajax_listener/'
             , 'component_prefix_id' => $id_prefix
         );
-        
-        $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'].'u_group/u_group_security_app_access_time_js'
-                ,$param
-                ,TRUE
-            );
+
+        $js = get_instance()->load->view(ICES_Engine::$app['app_base_dir'] . 'u_group/u_group_security_app_access_time_js'
+                , $param
+                , TRUE
+        );
         $app->js_set($js);
-        
+
         $js = '
             <script>
-                $("#'.$id_prefix.'_tab").find("#'.$id_prefix.'_method").val("view");
+                $("#' . $id_prefix . '_tab").find("#' . $id_prefix . '_method").val("view");
             </script>
         ';
         $app->js_set($js);
-        
+
         $js = '                
-            '.$id_prefix.'_init();
-            '.$id_prefix.'_bind_event();
-            '.$id_prefix.'_components_prepare(); 
+            ' . $id_prefix . '_init();
+            ' . $id_prefix . '_bind_event();
+            ' . $id_prefix . '_components_prepare(); 
         ';
         $app->js_set($js);
-        
+
         //</editor-fold>
     }
-    
+
 }
-    
+
 ?>

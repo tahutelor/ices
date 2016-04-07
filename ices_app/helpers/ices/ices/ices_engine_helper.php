@@ -29,6 +29,23 @@ class ICES_Engine {
                         'app_db_lock_limit'=>10,
                         'non_permission_controller'=>array(),
                         'app_info'=>'Support: +6289677006638<br/><i class="fa fa-skype text-blue"></i> purpl3girl'
+                    ),                    
+                    array(
+                        'val'=>'mini_warehouse',
+                        'text'=>'Mini Warehouse',
+                        'dev_text'=>'Aryana - Mini Warehouse',
+                        'short_name'=>'Mini Warehouse',
+                        'app_base_url'=>get_instance()->config->base_url().'mini_warehouse/',
+                        'app_base_dir'=>'mini_warehouse/',
+                        'app_db_conn_name'=>'mini_warehouse',
+                        'app_translate'=>false,
+                        'app_default_url'=>get_instance()->config->base_url().'mini_warehouse/dashboard',
+                        'app_icon_img'=>get_instance()->config->base_url().'libraries/img/ices/mini_warehouse.png',
+                        'app_theme'=>'AdminLTE',
+                        'app_db_lock_name'=>'mini_warehouse',
+                        'app_db_lock_limit'=>10,
+                        'non_permission_controller'=>array(),
+                        'app_info'=>'Support: +6289677006638<br/><i class="fa fa-skype text-blue"></i> purpl3girl'
                     ),
                     array(
                         'val'=>'civil_project',
