@@ -14,7 +14,10 @@
         <group name="JAVA"/>
         <group/>
         <group name="ARYANA-APP">
-            <file>file:/D:/htdocs/ices/ices_app/views/ices/home/home_js.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/controllers/test.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/controllers/aryana_phone_book/contact.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/ices/ices_engine_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/libraries/PHPExcel/Excel.php</file>
         </group>
     </open-files>
 </project-private>

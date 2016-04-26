@@ -38,7 +38,7 @@ class Contact extends MY_ICES_Controller {
             array("name" => "contact_category_text", "label" => "Contact Category", "data_type" => "text",'attribute' => array('style' => 'text-align:left;min-width:150px')),
             array("name" => "company_name", "label" => "Company", "data_type" => "text"),
             array("name" => "contact_phone_number", "label" => "Phone", "data_type" => "text"),
-            array("name" => "contact_status", "label" => "Status", "data_type" => "text"),
+//            array("name" => "contact_status", "label" => "Status", "data_type" => "text"),
         );
 
         $tbl = $form->table_ajax_add();
@@ -157,7 +157,7 @@ class Contact extends MY_ICES_Controller {
                     'query' => array(
                         'basic' => '
                             select * from (
-                                select distinct c.id, c.name contact_name,c.contact_status, ckey.keyword kyw, cmp.name company_name
+                                select c.id, c.name contact_name,c.contact_status, ckey.keyword kyw, cmp.name company_name
                                   ,contact_category_text,contact_phone_number
                                   from contact c
                                   left outer join (select ccc.contact_id,replace(GROUP_CONCAT(DISTINCT cc.name),",",", ")contact_category_text
@@ -171,14 +171,13 @@ class Contact extends MY_ICES_Controller {
                                   left outer join c_keyword ckey on c.id = ckey.contact_id
                                   left outer join c_company cpy on c.id = cpy.contact_id
                                   left outer join company cmp on cmp.id = cpy.company_id      
-                                  where c.status>0
+                                  
                             )tf
                             where 1=1',
                         'where' => '
                             and (
                                 contact_category_text LIKE ' . $lookup_str . ' 
                                 or contact_phone_number LIKE ' . $lookup_str . '
-                                or contact_status LIKE ' . $lookup_str . '  
                                 or contact_name LIKE ' . $lookup_str . '     
                                 or company_name LIKE ' . $lookup_str . '     
                                 or kyw LIKE ' . $lookup_str . '    
