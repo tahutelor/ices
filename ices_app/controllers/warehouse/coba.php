@@ -30,8 +30,6 @@ class Coba extends MY_ICES_Controller {
         $form = $row->form_add()->form_set('title',Lang::get('Coba Controller','List'))->form_set('span','12');
         $form->form_group_add()->button_add()->button_set('class','primary')->button_set('value',Lang::get(array('New','Coba Controller')))
                 ->button_set('icon','fa fa-plus')->button_set('href',ICES_Engine::$app['app_base_url'].'coba/add');
-        
-        
          
         $cols = array(
             array("name"=>"app_name","label"=>"App Name","data_type"=>"text"),
@@ -160,7 +158,6 @@ class Coba extends MY_ICES_Controller {
                                 select distinct *
                                 from coba t1
                                 where t1.status>0
-                                
                         ',
                         'where'=>'
                             and (
@@ -230,9 +227,7 @@ class Coba extends MY_ICES_Controller {
                     $response['coba'] = $coba;
                     $response['coba_status_list'] = $next_allowed_status_list;
                     
-                }
-                
-                
+                }                
                 //</editor-fold>
                 break;
             

@@ -14,10 +14,13 @@
         <group name="JAVA"/>
         <group/>
         <group name="ARYANA-APP">
-            <file>file:/D:/htdocs/ices/ices_app/controllers/test.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/controllers/aryana_phone_book/contact.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/ices/ices_engine_helper.php</file>
-            <file>file:/D:/htdocs/ices/ices_app/libraries/PHPExcel/Excel.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/security_menu/security_menu_data_support_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/controllers/ices/u_group.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/security_controller/security_controller_data_support_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/security_controller/security_controller_engine_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/security_menu/security_menu_engine_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/security_controller/security_controller_renderer_helper.php</file>
+            <file>file:/D:/htdocs/ices/ices_app/helpers/ices/u_group/u_group_renderer_helper.php</file>
         </group>
     </open-files>
 </project-private>

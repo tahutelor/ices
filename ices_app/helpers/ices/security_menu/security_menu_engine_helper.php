@@ -88,7 +88,7 @@ class Security_Menu_Engine {
 
         $phone_book_app_base_url = SI::type_get('ICES_Engine', 'aryana_phone_book', '$app_list')['app_base_url'];
         self::$menu_list['aryana_phone_book'] = array(
-            //<editor-fold defaultstate="collapsed" desc="ices menu">
+            //<editor-fold defaultstate="collapsed" desc="phonebook menu">
             Lang::get("Dashboard") => array(
                 'id' => 'd'
                 , "properties" => array(
@@ -152,15 +152,15 @@ class Security_Menu_Engine {
         );
 
 
-        $mini_warehouse_app_base_url = SI::type_get('ICES_Engine', 'warehouse', '$app_list')['app_base_url'];
+        $warehouse_app_base_url = SI::type_get('ICES_Engine', 'warehouse', '$app_list')['app_base_url'];
         self::$menu_list['warehouse'] = array(
-            //  <editor-fold defaultstate="collapsed" desc="mini warehouse menu">
+            //  <editor-fold defaultstate="collapsed" desc="warehouse menu">
             Lang::get("Dashboard") => array(
                 'id' => 'd'
                 , "properties" => array(
                     "class" => "fa fa-dashboard"
                 )
-                , "ref" => $mini_warehouse_app_base_url . "dashboard"
+                , "ref" => $warehouse_app_base_url . "dashboard"
             ),
             Lang::get("Master") => array(
                 'id' => 'm'
@@ -172,17 +172,17 @@ class Security_Menu_Engine {
                     Lang::get("Warehouse Category") => array(
                         'id' => 'w_cc'
                         , "properties" => array("class" => "fa fa-th")
-                        , "ref" => $mini_warehouse_app_base_url . "warehouse_category"
+                        , "ref" => $warehouse_app_base_url . "warehouse_category"
                     ),
                     Lang::get("Unit") => array(
                         'id' => 'un_t'
                         , "properties" => array("class" => "fa fa-th")
-                        , "ref" => $mini_warehouse_app_base_url . "unit"
+                        , "ref" => $warehouse_app_base_url . "unit"
                     ),
                     Lang::get("Warehouse Location") => array(
                         'id' => 'w_lc'
                         , "properties" => array("class" => "fa fa-th")
-                        , "ref" => $mini_warehouse_app_base_url . "warehouse_location"
+                        , "ref" => $warehouse_app_base_url . "warehouse_location"
                     ),
                 )
             ),
@@ -196,12 +196,12 @@ class Security_Menu_Engine {
                     Lang::get("Stock In") => array(
                         'id' => 'st_in'
                         , "properties" => array("class" => "fa fa-th")
-                        , "ref" => $mini_warehouse_app_base_url . "inflow"
+                        , "ref" => $warehouse_app_base_url . "inflow"
                     ),
                     Lang::get("Stock Out") => array(
                         'id' => 'st_out'
                         , "properties" => array("class" => "fa fa-th")
-                        , "ref" => $mini_warehouse_app_base_url . "inflow"
+                        , "ref" => $warehouse_app_base_url . "inflow"
                     ),
                 )
             ),
