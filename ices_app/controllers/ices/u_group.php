@@ -30,9 +30,7 @@ class U_Group extends MY_ICES_Controller {
         $form = $row->form_add()->form_set('title',Lang::get('User Group','List'))->form_set('span','12');
         $form->form_group_add()->button_add()->button_set('class','primary')->button_set('value',Lang::get(array('New','User Group')))
                 ->button_set('icon','fa fa-plus')->button_set('href',ICES_Engine::$app['app_base_url'].'u_group/add');
-        
-        
-         
+                
         $cols = array(
             array("name"=>"app_name","label"=>"App Name","data_type"=>"text"),
             array("name"=>"name","label"=>"Name","data_type"=>"text",'is_key'=>true),

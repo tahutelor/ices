@@ -32,9 +32,9 @@ class ICES_Engine {
                     ),                    
                     array(
                         'val'=>'warehouse',
-                        'text'=>'Mini Warehouse',
-                        'dev_text'=>'Aryana - Mini Warehouse',
-                        'short_name'=>'Mini Warehouse',
+                        'text'=>'Warehouse',
+                        'dev_text'=>'Aryana - Warehouse',
+                        'short_name'=>'Warehouse',
                         'app_base_url'=>get_instance()->config->base_url().'warehouse/',
                         'app_base_dir'=>'warehouse/',
                         'app_db_conn_name'=>'warehouse',
@@ -226,4 +226,3 @@ class ICES_Engine {
     }
     
 }
-?>
