@@ -104,6 +104,8 @@ class Coba extends MY_ICES_Controller {
                 $history_pane = $history_tab->div_add()->div_set('id','status_log_tab')->div_set('class','tab-pane');
                 Coba_Renderer::coba_status_log_render($app,$history_pane,array("id"=>$id),$this->path);
             }
+            
+            
             $app->render();
         }
         else{

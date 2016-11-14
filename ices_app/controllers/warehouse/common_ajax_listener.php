@@ -14,4 +14,3 @@ class Common_Ajax_Listener extends Common_Ajax_Listener_Parent{
         parent::__construct();
     }
 }
-?>

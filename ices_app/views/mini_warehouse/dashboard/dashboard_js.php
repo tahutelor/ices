@@ -15,7 +15,8 @@
                 $(loverlay).removeClass('overlay');
                 $(lloading).removeClass('loading-img');
             },500);
-            //$(irow.target_data)[0].innerHTML = irow.data;    
+            //$(irow.target_data)[0].innerHTML = irow.data;        
+            
         },
         dashboard_get:function(imodule_arr){
             var ldata = {
@@ -37,7 +38,7 @@
                 [imodule] : ['weekly_sales_invoice'];
             dashboard.dashboard_get(imodule);
         }
-    },
+    }
     
     $('[dashboard_component] [id*="_refresh"]').on('click',function(){
         
@@ -56,7 +57,8 @@
         var lprefix_id = '#'+$(this).closest('[module_name]').attr('module_name');
         if($(lprefix_id+'_div').find('[class="slimScrollDiv"]').height()>0){
             $(lprefix_id+'_div').find('.box-body').attr('original_height',APP_CONVERTER._float($(lprefix_id+'_div').find('.box-body').css('height')));
-            $(lprefix_id+'_div').find('[class="slimScrollDiv"]').height(0);            
+            $(lprefix_id+'_div').find('[class="slimScrollDiv"]').height(0);
+            
         }
         else{
             $(lprefix_id+'_div').find('[class="slimScrollDiv"]').height($(lprefix_id+'_div').find('.box-body').attr('original_height'));

@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) 
     exit('No direct script access allowed');
+
 
 $my_param = array(
     'file_path' => APPPATH . 'controllers/ices/dashboard.php',
@@ -18,7 +19,4 @@ class Dashboard extends Dashboard_Parent {
         parent::__construct();
         
     }
-
 }
-
-?>

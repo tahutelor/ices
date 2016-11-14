@@ -221,6 +221,76 @@ class Security_Menu_Engine {
             ),
                 //</editor-fold>
         );
+        
+        $mini_warehouse_app_base_url = SI::type_get('ICES_Engine', 'mini_warehouse', '$app_list')['app_base_url'];
+        self::$menu_list['mini_warehouse'] = array(
+            //  <editor-fold defaultstate="collapsed" desc="mini warehouse menu">
+            Lang::get("Dashboard") => array(
+                'id' => 'd'
+                , "properties" => array(
+                    "class" => "fa fa-dashboard"
+                )
+                , "ref" => $mini_warehouse_app_base_url . "dashboard"
+            ),
+//            Lang::get("Master") => array(
+//                'id' => 'm'
+//                , "properties" => array(
+//                    "class" => 'fa fa-th'
+//                )
+//                , "ref" => "#"
+//                , "child" => array(
+//                    Lang::get("Warehouse Category") => array(
+//                        'id' => 'w_cc'
+//                        , "properties" => array("class" => "fa fa-th")
+//                        , "ref" => $warehouse_app_base_url . "warehouse_category"
+//                    ),
+//                    Lang::get("Unit") => array(
+//                        'id' => 'un_t'
+//                        , "properties" => array("class" => "fa fa-th")
+//                        , "ref" => $warehouse_app_base_url . "unit"
+//                    ),
+//                    Lang::get("Warehouse Location") => array(
+//                        'id' => 'w_lc'
+//                        , "properties" => array("class" => "fa fa-th")
+//                        , "ref" => $warehouse_app_base_url . "warehouse_location"
+//                    ),
+//                )
+//            ),
+//            Lang::get("Stock Card") => array(
+//                'id' => 's'
+//                , "properties" => array(
+//                    "class" => 'fa fa-list-alt'
+//                )
+//                , "ref" => "#"
+//                , "child" => array(
+//                    Lang::get("Stock In") => array(
+//                        'id' => 'st_in'
+//                        , "properties" => array("class" => "fa fa-th")
+//                        , "ref" => $warehouse_app_base_url . "inflow"
+//                    ),
+//                    Lang::get("Stock Out") => array(
+//                        'id' => 'st_out'
+//                        , "properties" => array("class" => "fa fa-th")
+//                        , "ref" => $warehouse_app_base_url . "inflow"
+//                    ),
+//                )
+//            ),
+//            Lang::get("Report") => array(
+//                'id' => 'r'
+//                , "properties" => array(
+//                    "class" => 'fa fa-child'
+//                )
+//                , "ref" => "#"
+//                , "child" => array(
+//                    Lang::get("Report Stock Card") => array(
+//                        'id' => 'r_sc'
+//                        , "properties" => array("class" => "fa fa-th")
+//                        , "ref" => $phone_book_app_base_url . "contact/add"
+//                    ),
+//                )
+//            ),
+                //</editor-fold>
+        );
 
         $sehat_pharmacy_store_app_base_url = SI::type_get('ICES_Engine', 'sehat_pharmacy_store', '$app_list')['app_base_url'];
         self::$menu_list['sehat_pharmacy_store'] = array(

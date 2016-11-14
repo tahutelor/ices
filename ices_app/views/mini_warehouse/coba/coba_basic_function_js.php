@@ -17,18 +17,20 @@
         coba_window_scroll = '<?php echo $window_scroll; ?>';
         coba_data_support_url = '<?php echo $data_support_url; ?>';
         coba_common_ajax_listener = '<?php echo $common_ajax_listener; ?>';
-        coba_component_prefix_id = '#<?php echo $component_prefix_id; ?>';        
+        coba_component_prefix_id = '#<?php echo $component_prefix_id; ?>';
+        
     },
 
     var coba_after_submit = function(){
 
-    }
+    },
     
     var coba_data ={
         
-    }
+    },
     
-    var coba_methods = {        
+    var coba_methods = {
+        
         hide_all:function(){
             var lparent_pane = coba_parent_pane;
             var lprefix_id = coba_component_prefix_id;
@@ -38,7 +40,8 @@
             var lparent_pane = coba_parent_pane;
             var lcomponents = $(lparent_pane).find('.disable_all');
             APP_COMPONENT.disable_all(lparent_pane);
-        },        
+        },
+        
         show_hide: function(){
             var lparent_pane = coba_parent_pane;
             var lprefix_id = coba_component_prefix_id;
@@ -139,8 +142,9 @@
                     coba_after_submit();
                 }
             }
-        }
-    },
+        },
+    }
+
     var coba_bind_event = function(){
         var lparent_pane = coba_parent_pane;
         var lprefix_id = coba_component_prefix_id;
@@ -149,8 +153,11 @@
         APP_COMPONENT.button.submit.set($(lparent_pane).find(lprefix_id+'_btn_submit'),{
             parent_pane:lparent_pane,
             module_method:coba_methods
-        }); 
-    }    
+        });
+        
+        
+    }
+    
     var coba_components_prepare= function(){
         var lparent_pane = coba_parent_pane;
         var lprefix_id = coba_component_prefix_id;
@@ -172,18 +179,22 @@
                         $(lparent_pane).find(lprefix_id+'_app_name').select2('data',{id:lcoba.app_name, text:lcoba.app_name_text});
                         $(lparent_pane).find(lprefix_id+'_controller_name').val(lcoba.name);
                         $(lparent_pane).find(lprefix_id+'_method_name').val(lcoba.method);
+                        
                         $(lparent_pane).find(lprefix_id+'_coba_status')
-                            .select2('data',{id:lcoba.coba_status,text:lcoba.coba_status_text}).change();
+                            .select2('data',{id:lcoba.coba_status
+                                ,text:lcoba.coba_status_text}).change();
                             
                         $(lparent_pane).find(lprefix_id+'_coba_status')
                             .select2({data:lresponse.coba_status_list});
-                        
+                                               
                     };
                     break;            
             }
-        },
+        }
+    
         coba_methods.enable_disable();
         coba_methods.show_hide();
         coba_data_set();
     }
+    
 </script>
